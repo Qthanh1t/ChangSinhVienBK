@@ -177,8 +177,6 @@ public class PauseOverlay {
         else if (isIn(e, volumeButton))
             volumeButton.setMouseOver(true);
 
-
-
 	}
 
     private boolean isIn(MouseEvent e, PauseButton b) {
