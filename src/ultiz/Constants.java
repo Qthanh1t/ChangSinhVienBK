@@ -4,6 +4,39 @@ import main.Game;
 
 public class Constants {
 
+	public static class EnemyConstants {
+		public static final int PROFESSOR=0;
+
+		public static final int IDLE_LEFT=0;
+		public static final int IDLE_RIGHT=1;
+		public static final int RUN_LEFT=2;
+		public static final int RUN_RIGHT=3;
+		
+		public static final int PROFESSOR_WIDTH_DEFAULT=64;
+		public static final int PROFESSOR_HEIGHT_DEFAULT=64;
+
+		public static final int PROFESSOR_WIDTH=(int)(PROFESSOR_WIDTH_DEFAULT*Game.SCALE);
+		public static final int PROFESSOR_HEIGHT=(int)(PROFESSOR_HEIGHT_DEFAULT*Game.SCALE);
+
+		public static int GetSpriteAmount(int enemy_type, int enemy_state){
+			switch (enemy_type) {
+				case PROFESSOR:
+					switch (enemy_state) {
+						case RUN_LEFT:
+						case RUN_RIGHT:
+							return 9;
+						case IDLE_LEFT:
+						case IDLE_RIGHT:
+							return 1;
+						
+					}
+				
+			}
+			return 0;
+		}
+
+	}
+
 	public static class Environment {
 		public static final int BIG_CLOUD_WIDTH_DEFAULT = 448;
 		public static final int BIG_CLOUD_HEIGHT_DEFAULT = 101;
