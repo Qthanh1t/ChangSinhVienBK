@@ -15,8 +15,12 @@ public class Constants {
 		public static final int PROFESSOR_WIDTH_DEFAULT=64;
 		public static final int PROFESSOR_HEIGHT_DEFAULT=64;
 
-		public static final int PROFESSOR_WIDTH=(int)(PROFESSOR_WIDTH_DEFAULT*Game.SCALE);
-		public static final int PROFESSOR_HEIGHT=(int)(PROFESSOR_HEIGHT_DEFAULT*Game.SCALE);
+		public static final int PROFESSOR_WIDTH=(int)(0.8*PROFESSOR_WIDTH_DEFAULT*Game.SCALE);
+		public static final int PROFESSOR_HEIGHT=(int)(0.7*PROFESSOR_HEIGHT_DEFAULT*Game.SCALE);
+
+		public static final int PROFESSOR_DRAWOFFSET_X=(int)(0.8*20*Game.SCALE);
+		public static final int PROFESSOR_DRAWOFFSET_Y=(int)(1.0*10*Game.SCALE);
+		
 
 		public static int GetSpriteAmount(int enemy_type, int enemy_state){
 			switch (enemy_type) {

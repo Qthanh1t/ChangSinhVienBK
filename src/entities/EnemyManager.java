@@ -17,21 +17,27 @@ public class EnemyManager {
     public EnemyManager(Playing playing){
         this.playing=playing;
         loadEnemyImgs();
+        addEnemies();
     }
 
-    public void update(){
+    private void addEnemies() {
+        professors = LoadSave.GetProfessors();
+    }
+
+    public void update(int[][] lvlData){
         for(Professor p:professors){
-            p.update();
+            p.update(lvlData);
         }
     }
 
-    public void draw(Graphics g){
-        drawProfessors(g);
+    public void draw(Graphics g, int xLvlOffset){
+        drawProfessors(g, xLvlOffset);
     }
 
-    private void drawProfessors(Graphics g) {
+    private void drawProfessors(Graphics g, int xLvlOffset) {
         for(Professor p:professors){
-            g.drawImage(professorArr[p.getEnemyState()][p.getAniIndex()], (int) p.getHitbox().x, (int) p.getHitbox().y, PROFESSOR_WIDTH, PROFESSOR_HEIGHT, null);
+            g.drawImage(professorArr[p.getEnemyState()][p.getAniIndex()], (int)(p.getHitbox().x - xLvlOffset - PROFESSOR_DRAWOFFSET_X), (int) (p.getHitbox().y - PROFESSOR_DRAWOFFSET_Y), PROFESSOR_WIDTH, PROFESSOR_HEIGHT, null);
+            //p.drawHitbox(g, xLvlOffset);
         }
     }
 
