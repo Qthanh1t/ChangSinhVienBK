@@ -11,6 +11,7 @@ public class Constants {
 		public static final int IDLE_RIGHT=1;
 		public static final int RUN_LEFT=2;
 		public static final int RUN_RIGHT=3;
+		public static final int ATTACK=4;
 		
 		public static final int PROFESSOR_WIDTH_DEFAULT=64;
 		public static final int PROFESSOR_HEIGHT_DEFAULT=64;
