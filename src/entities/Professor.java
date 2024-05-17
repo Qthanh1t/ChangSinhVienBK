@@ -14,7 +14,7 @@ public class Professor extends Enemy {
 
     private Rectangle2D.Float attackBox;
     private int attackBoxOffsetX;
-
+    private int count=0;
     public Professor(float x, float y) {
         super(x, y, PROFESSOR_WIDTH, PROFESSOR_HEIGHT, PROFESSOR);
         initHitbox(x, y,(int) (20*Game.SCALE), (int) (31*Game.SCALE));
@@ -27,7 +27,7 @@ public class Professor extends Enemy {
     }
 
     public void update(int[][] lvlData, Player player){
-        updateMove(lvlData, player);
+        updateBehavior(lvlData, player);
         updateAnimationTick();
         updateAttackBox();
     }
@@ -38,7 +38,7 @@ public class Professor extends Enemy {
         attackBox.y=hitbox.y;
     }
 
-    public void updateMove(int[][] lvlData, Player player){
+    public void updateBehavior(int[][] lvlData, Player player){
         if(firstUpdate){
             firstUpdateCheck(lvlData);
         }
@@ -57,7 +57,16 @@ public class Professor extends Enemy {
                     //     newState(ATTACK);
                     // }
                     move(lvlData);
-
+                    if(!attackChecked){
+                        CheckEnemyHit(attackBox,player);
+                    }
+                    else {
+                        if(count>=200){
+                            attackChecked=false;
+                            count=0;
+                        } 
+                        else count++;
+                    }
                     break;
                 default:
                     newState(RUN_LEFT);
@@ -65,6 +74,7 @@ public class Professor extends Enemy {
             }
         }
     }
+
     public void drawAttackBox(Graphics g, int xLvlOffset){
         g.setColor(Color.RED);
         g.drawRect((int)(attackBox.x - xLvlOffset),(int) attackBox.y,(int) attackBox.width,(int) attackBox.height);

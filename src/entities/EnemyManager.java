@@ -52,4 +52,10 @@ public class EnemyManager {
         professorArr[0][0]=professorArr[2][0];
         professorArr[1][0]=professorArr[3][0];
     }
+
+    public void resetAllEnemies(){
+        for(Professor p : professors){
+            p.resetEnemy();
+        }
+    }
 }

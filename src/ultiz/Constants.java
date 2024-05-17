@@ -1,5 +1,7 @@
 package ultiz;
 
+import static ultiz.Constants.EnemyConstants.*;
+
 import main.Game;
 
 public class Constants {
@@ -122,5 +124,13 @@ public class Constants {
 		
 	}
 	
-	
+	public static int GetEnemyDmg(int enemy_type){
+		switch (enemy_type) {
+			case PROFESSOR:
+				return -1;
+		
+			default:
+				return 0;
+		}
+	}
 }

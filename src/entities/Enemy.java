@@ -2,7 +2,10 @@ package entities;
 
 import static ultiz.HelpMethods.*;
 import static ultiz.Constants.EnemyConstants.*;
+import static ultiz.Constants.*;
 import static ultiz.Constants.Directions.*;
+
+import java.awt.geom.Rectangle2D;
 import java.lang.Math;
 
 import main.Game;
@@ -18,6 +21,7 @@ public abstract class Enemy extends Entity {
     protected int walkDir=LEFT;
     protected int tileY;
     protected float attackDistance=Game.TILES_SIZE;
+    protected boolean attackChecked;
 
     public Enemy(float x, float y, int width, int height, int enemyType){
         super(x, y, width, height);
@@ -97,6 +101,14 @@ public abstract class Enemy extends Entity {
         aniIndex=0;
     }
 
+    protected void CheckEnemyHit(Rectangle2D.Float attackBox, Player player) {
+        if(attackBox.intersects(player.getHitbox())){
+            player.changeHealth(GetEnemyDmg(enemyType));
+            attackChecked=true;
+        }
+        
+    }
+
     protected void updateAnimationTick(){
         aniTick++;
         if(aniTick>=aniSpeed){
@@ -120,6 +132,14 @@ public abstract class Enemy extends Entity {
             enemyState=RUN_LEFT;
         } 
     }
+
+    public void resetEnemy() {
+        hitbox.x=x;
+        hitbox.y=y;
+        firstUpdate=true;
+        fallSpeed=0;
+    }
+
     public int getAniIndex(){
         return aniIndex;
     }

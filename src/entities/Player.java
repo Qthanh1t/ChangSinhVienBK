@@ -5,6 +5,7 @@ import static ultiz.HelpMethods.*;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
+import gamestates.Playing;
 import main.Game;
 import ultiz.LoadSave;
 
@@ -38,15 +39,20 @@ public class Player extends Entity {
 	private int flipX=0;
 	private int flipW=1;
 
-	
-	public Player(float x, float y, int width, int height) {
+	private Playing playing;
+	public Player(float x, float y, int width, int height, Playing playing) {
 		super(x, y, width, height);
+		this.playing = playing;
 		loadAnimations();
 		initHitbox(x, y, (int) (23 * Game.SCALE), (int) (30 * Game.SCALE));
 	}
 	
 	public void update() {
 		//updateHealthBar();
+		if(health<=0){
+			playing.setGameOver(true);
+			return;
+		}
 		updatePos();
 		updateAnimationTick();
 		setAnimation();
@@ -207,6 +213,10 @@ public class Player extends Entity {
 				animations[2][i] = img.getSubimage((i+15) * 32, 0, 32, 32);
 			for (int i = 0; i < 1; i++) 
 				animations[3][i] = img.getSubimage((i+15) * 32, 0, 32, 32);
+			for (int i = 0; i < 2; i++) 
+				animations[4][i] = img.getSubimage((i+16) * 32, 0, 32, 32);
+			for (int i = 0; i < 5; i++) 
+				animations[5][i] = img.getSubimage((i+18) * 32, 0, 32, 32);
 			
 			BufferedImage statusBar = LoadSave.GetSpriteAtlas(LoadSave.STATUS_BAR);
 			statusBarImg = new BufferedImage[4];
@@ -265,6 +275,20 @@ public class Player extends Entity {
 	
 	public void setJump(boolean jump) {
 		this.jump = jump;
+	}
+
+	public void resetAll() {
+		resetDirBooleans();
+		inAir = false;
+		moving = false;
+		playerAction = IDLE;
+		health=3;
+
+		hitbox.x=x;
+		hitbox.y=y;
+
+		if (!IsEntityOnFloor(hitbox, lvlData)) 
+				inAir = true;
 	}
 	
 }
