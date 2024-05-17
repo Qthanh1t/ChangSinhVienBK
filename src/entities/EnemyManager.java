@@ -38,6 +38,7 @@ public class EnemyManager {
         for(Professor p:professors){
             g.drawImage(professorArr[p.getEnemyState()][p.getAniIndex()], (int)(p.getHitbox().x - xLvlOffset - PROFESSOR_DRAWOFFSET_X), (int) (p.getHitbox().y - PROFESSOR_DRAWOFFSET_Y), PROFESSOR_WIDTH, PROFESSOR_HEIGHT, null);
             //p.drawHitbox(g, xLvlOffset);
+            //p.drawAttackBox(g, xLvlOffset);
         }
     }
 
