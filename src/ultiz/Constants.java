@@ -1,5 +1,7 @@
 package ultiz;
 
+import static ultiz.Constants.EnemyConstants.*;
+
 import main.Game;
 
 public class Constants {
@@ -11,6 +13,7 @@ public class Constants {
 		public static final int IDLE_RIGHT=1;
 		public static final int RUN_LEFT=2;
 		public static final int RUN_RIGHT=3;
+		public static final int ATTACK=4;
 		
 		public static final int PROFESSOR_WIDTH_DEFAULT=64;
 		public static final int PROFESSOR_HEIGHT_DEFAULT=64;
@@ -95,9 +98,8 @@ public class Constants {
 		public static final int RUNNING = 1;
 		public static final int JUMP = 2;
 		public static final int FALLING = 3;
-		public static final int GROUND = 4;
-		public static final int HIT = 5;
-		public static final int ATTACK_1 = 6;
+		public static final int HIT = 4;
+		public static final int DEAD = 5;
 	
 		
 		public static int GetSpriteAmount(int player_action) {
@@ -108,7 +110,9 @@ public class Constants {
 				return 6;
 			case IDLE:
 				return 9;
-			case ATTACK_1:
+			case HIT:
+				return 2;
+			case DEAD:
 				return 5;
 			case JUMP:
 			case FALLING:
@@ -120,5 +124,13 @@ public class Constants {
 		
 	}
 	
-	
+	public static int GetEnemyDmg(int enemy_type){
+		switch (enemy_type) {
+			case PROFESSOR:
+				return -1;
+		
+			default:
+				return 0;
+		}
+	}
 }

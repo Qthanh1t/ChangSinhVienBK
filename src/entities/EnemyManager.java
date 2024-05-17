@@ -24,9 +24,9 @@ public class EnemyManager {
         professors = LoadSave.GetProfessors();
     }
 
-    public void update(int[][] lvlData){
+    public void update(int[][] lvlData, Player player){
         for(Professor p:professors){
-            p.update(lvlData);
+            p.update(lvlData, player);
         }
     }
 
@@ -38,11 +38,12 @@ public class EnemyManager {
         for(Professor p:professors){
             g.drawImage(professorArr[p.getEnemyState()][p.getAniIndex()], (int)(p.getHitbox().x - xLvlOffset - PROFESSOR_DRAWOFFSET_X), (int) (p.getHitbox().y - PROFESSOR_DRAWOFFSET_Y), PROFESSOR_WIDTH, PROFESSOR_HEIGHT, null);
             //p.drawHitbox(g, xLvlOffset);
+            //p.drawAttackBox(g, xLvlOffset);
         }
     }
 
     private void loadEnemyImgs() {
-        professorArr = new BufferedImage[4][9];
+        professorArr = new BufferedImage[5][9];
         BufferedImage temp = LoadSave.GetSpriteAtlas(LoadSave.PROFESSOR_SPRITE);
         for(int i=0;i<9;i++){
             professorArr[2][i] = temp.getSubimage(PROFESSOR_WIDTH_DEFAULT*i, PROFESSOR_HEIGHT_DEFAULT, PROFESSOR_WIDTH_DEFAULT, PROFESSOR_HEIGHT_DEFAULT);
@@ -50,5 +51,11 @@ public class EnemyManager {
         }
         professorArr[0][0]=professorArr[2][0];
         professorArr[1][0]=professorArr[3][0];
+    }
+
+    public void resetAllEnemies(){
+        for(Professor p : professors){
+            p.resetEnemy();
+        }
     }
 }
