@@ -4,8 +4,11 @@ import static ultiz.Constants.EnemyConstants.*;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
@@ -30,6 +33,7 @@ public class LoadSave {
 	public static final String SMALL_CLOUDS = "small_clouds.png";
 	public static final String PROFESSOR_SPRITE = "professor_sprite.png";
 	public static final String STATUS_BAR = "health.png";
+	public static final String COMPLETED_IMG = "completed_sprite.png";
 
 	public static BufferedImage GetSpriteAtlas(String fileName) {
 		BufferedImage img = null;
@@ -48,33 +52,37 @@ public class LoadSave {
 		}
 		return img;
 	}
-	
-	public static ArrayList<Professor> GetProfessors(){
-		BufferedImage img = GetSpriteAtlas(LEVEL_ONE_DATA);
-		ArrayList<Professor> list = new ArrayList<>();
-		for (int j = 0; j < img.getHeight(); j++) 
-			for (int i = 0; i < img.getWidth(); i++) {
-				Color color = new Color(img.getRGB(i, j));
-				int value = color.getGreen();
-				if (value == PROFESSOR) 
-					list.add(new Professor(i*Game.TILES_SIZE, j*Game.TILES_SIZE));
+
+	public static BufferedImage[] GetAllLevels() {
+		URL url = LoadSave.class.getResource("/lvls");
+		File file = null;
+		
+		try {
+			file = new File(url.toURI());
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+
+		File[] files = file.listFiles();
+		File[] filesSorted = new File[files.length];
+
+		for (int i = 0; i < filesSorted.length; i++) 
+			for (int j = 0; j < files.length; j++) {
+				if (files[j].getName().equals((i + 1) + ".png"))
+					filesSorted[i] = files[j];
+
 			}
-		return list;
+
+		BufferedImage[] imgs = new BufferedImage[filesSorted.length];
+
+		for (int i = 0; i < imgs.length; i++)
+			try {
+				imgs[i] = ImageIO.read(filesSorted[i]);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+		return imgs;
 	}
 
-	public static int[][] GetLevelData() {
-		BufferedImage img = GetSpriteAtlas(LEVEL_ONE_DATA);
-		int[][] lvlData = new int[img.getHeight()][img.getWidth()];
-		
-		for (int j = 0; j < img.getHeight(); j++) 
-			for (int i = 0; i < img.getWidth(); i++) {
-				Color color = new Color(img.getRGB(i, j));
-				int value = color.getRed();
-				if (value >= 50) 
-					value = 0;
-				lvlData[j][i] = value;
-			}
-		return lvlData;
-		
-	}
 }

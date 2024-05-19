@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import gamestates.Playing;
+import levels.Level;
 import ultiz.LoadSave;
 
 public class EnemyManager {
@@ -17,17 +18,20 @@ public class EnemyManager {
     public EnemyManager(Playing playing){
         this.playing=playing;
         loadEnemyImgs();
-        addEnemies();
     }
 
-    private void addEnemies() {
-        professors = LoadSave.GetProfessors();
+    public void loadEnemies(Level level) {
+        professors = level.getProfessors();
     }
 
     public void update(int[][] lvlData, Player player){
-        for(Professor p:professors){
+        boolean isAnyActive = false;
+        for(Professor p : professors) {
             p.update(lvlData, player);
+            isAnyActive = true;
         }
+        if (!isAnyActive)
+            playing.setLevelCompleted(true);
     }
 
     public void draw(Graphics g, int xLvlOffset){
