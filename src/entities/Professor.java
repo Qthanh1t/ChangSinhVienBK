@@ -1,8 +1,6 @@
 package entities;
 
-import static ultiz.Constants.Directions.*;
 import static ultiz.Constants.EnemyConstants.*;
-import static ultiz.HelpMethods.*;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -12,17 +10,16 @@ import main.Game;
 
 public class Professor extends Enemy {
 
-    private Rectangle2D.Float attackBox;
     private int attackBoxOffsetX;
     private int count=0;
     public Professor(float x, float y) {
         super(x, y, PROFESSOR_WIDTH, PROFESSOR_HEIGHT, PROFESSOR);
-        initHitbox(x, y,(int) (20*Game.SCALE), (int) (31*Game.SCALE));
+        initHitbox(20, 31);
         initAttackBox();
     }
 
     private void initAttackBox() {
-        attackBox = new Rectangle2D.Float(x,y,(int) (20*Game.SCALE), (int) (31*Game.SCALE));
+        attackBox = new Rectangle2D.Float(x,y,(int) (20 * Game.SCALE), (int) (31 * Game.SCALE));
         attackBoxOffsetX = 0;
     }
 
@@ -47,7 +44,7 @@ public class Professor extends Enemy {
             updateInAir(lvlData);
         }
         else{
-            switch (enemyState) {
+            switch (state) {
                 case RUN_LEFT:
                 case RUN_RIGHT:
                     // if(canSeePlayer(lvlData, player)){

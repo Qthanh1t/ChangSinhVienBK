@@ -1,5 +1,6 @@
 package entities;
 
+import static ultiz.Constants.*;
 import static ultiz.Constants.PlayerConstants.*;
 import static ultiz.HelpMethods.*;
 import java.awt.Graphics;
@@ -11,41 +12,37 @@ import main.Game;
 import ultiz.LoadSave;
 
 public class Player extends Entity {
-
 	private BufferedImage[][] animations;
-	private int aniTick, aniIndex, aniSpeed = 25;
-	private int playerAction = IDLE;
+
 	private boolean moving = false; //attacking = false;
-	private boolean left, up, right, down, jump;
-	private float playerSpeed = 1.0f * Game.SCALE;
+	private boolean left, right, jump;
 	private int[][] lvlData;
 	private float xDrawOffSet = 9 * Game.SCALE;
 	private float yDrawOffSet = 9 * Game.SCALE;
 	
 	// Jumping / Gravity
-	private float airSpeed = 0f;
-	private float gravity = 0.04f * Game.SCALE;
 	private float jumpSpeed = -2.3f * Game.SCALE;
 	private float fallSpeedAfterCollision = 0.4f * Game.SCALE;
-	private boolean inAir = false;
 
 	// StatusBar
 	private BufferedImage[] statusBarImg;
-	private int statusBarWidth = (int) (32*Game.SCALE);
-	private int statusBarHeight= (int) (32*Game.SCALE);
-	private int statusBarX= (int) (10*Game.SCALE);
-	private int statusBarY= (int) (10*Game.SCALE);
-	private int health=3;
+	private int statusBarWidth = (int) (32 * Game.SCALE);
+	private int statusBarHeight = (int) (32 * Game.SCALE);
+	private int statusBarX = (int) (10 * Game.SCALE);
+	private int statusBarY = (int) (10 * Game.SCALE);
 
-	private int flipX=0;
-	private int flipW=1;
+	private int flipX = 0;
+	private int flipW = 1;
 
 	private Playing playing;
 	public Player(float x, float y, int width, int height, Playing playing) {
 		super(x, y, width, height);
 		this.playing = playing;
+		this.state = IDLE;
+		this.health = 3;
+		this.walkSpeed = 1.0f * Game.SCALE;
 		loadAnimations();
-		initHitbox(x, y, (int) (23 * Game.SCALE), (int) (30 * Game.SCALE));
+		initHitbox(23, 30);
 	}
 
 	public void setSpawn(Point spawn) {
@@ -71,7 +68,7 @@ public class Player extends Entity {
 	// }
 
 	public void render(Graphics g, int lvlOffSet) {
-		g.drawImage(animations[playerAction][aniIndex], (int) (hitbox.x - xDrawOffSet) - lvlOffSet + flipX, 
+		g.drawImage(animations[state][aniIndex], (int) (hitbox.x - xDrawOffSet) - lvlOffSet + flipX, 
 										(int) (hitbox.y - yDrawOffSet), width*flipW, height, null);
 		//drawHitbox(g, lvlOffSet);
 		drawUI(g);
@@ -84,10 +81,10 @@ public class Player extends Entity {
 	private void updateAnimationTick() {
 		
 		aniTick++;
-		if (aniTick >= aniSpeed) {
+		if (aniTick >= ANI_SPEED) {
 			aniTick = 0;
 			aniIndex++;
-			if (aniIndex >= GetSpriteAmount(playerAction)) {
+			if (aniIndex >= GetSpriteAmount(state)) {
 				aniIndex = 0;
 				//attacking = false;
 			}
@@ -97,24 +94,24 @@ public class Player extends Entity {
 	}
 	
 	private void setAnimation() {
-		int startAni = playerAction;
+		int startAni = state;
 		
 		if(moving) 
-			playerAction = RUNNING;
+			state = RUNNING;
 		else 
-			playerAction = IDLE;
+			state = IDLE;
 		
 		if(inAir) {
 			if(airSpeed < 0)
-				playerAction = JUMP;
+				state = JUMP;
 			else
-				playerAction = FALLING;
+				state = FALLING;
 		}
 		
 		// if(attacking)
 		// 	playerAction = ATTACK_1;
 		
-		if (startAni != playerAction) 
+		if (startAni != state) 
 			resetAniTick();
 			
 	}
@@ -138,13 +135,13 @@ public class Player extends Entity {
 		float xSpeed = 0;
 		
 		if (left) {
-			xSpeed -= playerSpeed;
+			xSpeed -= walkSpeed;
 			flipX = width;
 			flipW = -1;
 		}
 			
 		if (right) {
-			xSpeed += playerSpeed;
+			xSpeed += walkSpeed;
 			flipX = 0;
 			flipW = 1;
 		}
@@ -157,7 +154,7 @@ public class Player extends Entity {
 			
 			if(CanMoveHere(hitbox.x, hitbox.y + airSpeed, hitbox.width, hitbox.height, lvlData)) {
 				hitbox.y += airSpeed;
-				airSpeed += gravity;
+				airSpeed += GRAVITY;
 				updateXPos(xSpeed);
 			} else {
 				hitbox.y = GetEntityYPosUnderRoofOrAboveFloor(hitbox, airSpeed);
@@ -198,12 +195,12 @@ public class Player extends Entity {
 	}
 
 	public void changeHealth(int value){
-		this.health+=value;
-		if(this.health<=0){
-			this.health=0;
+		this.health += value;
+		if(this.health <= 0){
+			this.health = 0;
 			//game over
-		}else if(this.health>=3){
-			this.health=3;
+		}else if(this.health >= 3){
+			this.health = 3;
 		}
 	}
 
@@ -241,8 +238,6 @@ public class Player extends Entity {
 	public void resetDirBooleans() {
 		left = false;
 		right = false;
-		up = false;
-		down = false;
 	}
 	
 	// public void setAttacking(boolean attacking) {
@@ -257,14 +252,6 @@ public class Player extends Entity {
 		this.left = left;
 	}
 
-	public boolean isUp() {
-		return up;
-	}
-
-	public void setUp(boolean up) {
-		this.up = up;
-	}
-
 	public boolean isRight() {
 		return right;
 	}
@@ -273,14 +260,6 @@ public class Player extends Entity {
 		this.right = right;
 	}
 
-	public boolean isDown() {
-		return down;
-	}
-
-	public void setDown(boolean down) {
-		this.down = down;
-	}
-	
 	public void setJump(boolean jump) {
 		this.jump = jump;
 	}
@@ -289,11 +268,11 @@ public class Player extends Entity {
 		resetDirBooleans();
 		inAir = false;
 		moving = false;
-		playerAction = IDLE;
-		health=3;
+		state = IDLE;
+		health = 3;
 
-		hitbox.x=x;
-		hitbox.y=y;
+		hitbox.x = x;
+		hitbox.y = y;
 
 		if (!IsEntityOnFloor(hitbox, lvlData)) 
 				inAir = true;
