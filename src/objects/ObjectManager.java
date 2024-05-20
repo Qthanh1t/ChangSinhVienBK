@@ -1,10 +1,12 @@
 package objects;
 
 import java.awt.Graphics;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import gamestates.Playing;
+import levels.Level;
 import ultiz.LoadSave;
 import static ultiz.Constants.ObjectConstants.*;
 
@@ -13,19 +15,37 @@ public class ObjectManager {
     private Playing playing;
     private BufferedImage[] bookImgs;
     private BufferedImage testPosImg;
-    private ArrayList<Book> knowledgeBook;
+    private ArrayList<Book> knowledgeBooks;
     private ArrayList<TestPosition> testPosition;
 
     public ObjectManager(Playing playing) {
         this.playing = playing;
         loadImgs();
+    }
 
-        knowledgeBook = new ArrayList<>();
-        knowledgeBook.add(new Book(300, 300, KNOWLEDGE_BOOK));
-        knowledgeBook.add(new Book(400, 300, KNOWLEDGE_BOOK));
-        
-        testPosition = new ArrayList<>();
-        testPosition.add(new TestPosition(500, 300, TEST_POSITION));
+    public void checkObjectTouched(Rectangle2D.Float hitbox) {
+        for (Book b : knowledgeBooks)
+            if (b.isActive())
+                if (hitbox.intersects(b.getHitbox())) {
+                    b.setActive(false);
+                    applyEffectToPlayer(b);
+                }
+
+        for (TestPosition t : testPosition)
+            if (hitbox.intersects(t.getHitbox())) {
+                if (playing.getPlayer().getBooks() == 3) 
+                    playing.setLevelCompleted(true);
+            }
+    }
+
+    public void applyEffectToPlayer(Book b) {
+        if (b.getObjType() == KNOWLEDGE_BOOK)
+            playing.getPlayer().increaseKnowledge();
+    }
+
+    public void loadObjects(Level newLevel) {
+        knowledgeBooks = newLevel.getBooks();
+        testPosition = newLevel.getTestPos();
     }
 
     private void loadImgs() {
@@ -39,7 +59,7 @@ public class ObjectManager {
     }
 
     public void update() {
-        for (Book b : knowledgeBook)
+        for (Book b : knowledgeBooks)
             if (b.isActive())
                 b.update();
         
@@ -61,7 +81,7 @@ public class ObjectManager {
     }
 
     private void drawBook(Graphics g, int xLvlOffset) {
-        for (Book b : knowledgeBook)
+        for (Book b : knowledgeBooks)
             if (b.isActive())
                 g.drawImage(bookImgs[b.getAniIndex()],
                     (int) (b.getHitbox().x - b.getxDrawOffset() - xLvlOffset),
@@ -72,4 +92,11 @@ public class ObjectManager {
 
     }
 
+    public void resetAllObjects() {
+        for (Book b : knowledgeBooks)
+            b.reset();
+
+        for (TestPosition t : testPosition)
+            t.reset();
+    }
 }

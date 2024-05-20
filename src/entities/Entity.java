@@ -15,7 +15,7 @@ public abstract class Entity {
 	protected int state;
 	protected float airSpeed;
 	protected boolean inAir = false;
-	protected int health;
+	protected int health, books;
 	protected Rectangle2D.Float attackBox;
 	protected float walkSpeed = 1.0f * Game.SCALE;
 	

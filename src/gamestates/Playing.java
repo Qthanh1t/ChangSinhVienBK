@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
@@ -63,6 +64,7 @@ public class Playing extends State implements Statemethods {
 	
 	private void loadStartLevel() {
 		enemyManager.loadEnemies(levelManager.getCurrentLevel());
+		objectManager.loadObjects(levelManager.getCurrentLevel());
 	}
 
 	private void calcLvlOffsets() {
@@ -156,10 +158,15 @@ public class Playing extends State implements Statemethods {
 		lvlCompleted = false;
 		player.resetAll();
 		enemyManager.resetAllEnemies();
+		objectManager.resetAllObjects();
 	}
 
 	public void setGameOver(boolean gameOver){
 		this.gameOver=gameOver;
+	}
+
+	public void checkBooksTouched(Rectangle2D.Float hitbox) {
+		objectManager.checkObjectTouched(hitbox);
 	}
 
 	public void mouseDragged(MouseEvent e) {

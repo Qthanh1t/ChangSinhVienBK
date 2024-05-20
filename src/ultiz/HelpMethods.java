@@ -1,6 +1,7 @@
 package ultiz;
 
 import static ultiz.Constants.EnemyConstants.PROFESSOR;
+import static ultiz.Constants.ObjectConstants.*;
 
 import java.awt.Color;
 import java.awt.Point;
@@ -10,6 +11,8 @@ import java.util.ArrayList;
 
 import entities.Professor;
 import main.Game;
+import objects.Book;
+import objects.TestPosition;
 
 public class HelpMethods {
 	
@@ -149,4 +152,29 @@ public class HelpMethods {
 			}
 		return new Point(Game.TILES_SIZE, Game.TILES_SIZE);
 	}
+
+	public static ArrayList<Book> GetBooks(BufferedImage img){
+		ArrayList<Book> list = new ArrayList<>();
+		for (int j = 0; j < img.getHeight(); j++) 
+			for (int i = 0; i < img.getWidth(); i++) {
+				Color color = new Color(img.getRGB(i, j));
+				int value = color.getBlue();
+				if (value == KNOWLEDGE_BOOK) 
+					list.add(new Book(i * Game.TILES_SIZE, j * Game.TILES_SIZE, value));
+			}
+		return list;
+	}
+
+	public static ArrayList<TestPosition> GetTestPos(BufferedImage img){
+		ArrayList<TestPosition> list = new ArrayList<>();
+		for (int j = 0; j < img.getHeight(); j++) 
+			for (int i = 0; i < img.getWidth(); i++) {
+				Color color = new Color(img.getRGB(i, j));
+				int value = color.getBlue();
+				if (value == TEST_POSITION) 
+					list.add(new TestPosition(i * Game.TILES_SIZE, j * Game.TILES_SIZE, value));
+			}
+		return list;
+	}
+
 }

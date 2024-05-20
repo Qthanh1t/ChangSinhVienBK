@@ -12,12 +12,9 @@ public class TestPosition extends GameObject {
         doAnimation = false;
         xDrawOffset = (int) (0 * Game.SCALE);
         yDrawOffset = (int) (0 * Game.SCALE);
+
+        hitbox.y += yDrawOffset - (int) (Game.SCALE * 29);
+        hitbox.x += xDrawOffset / 2;
     }
-
-    // public void update() {
-
-    // }
-
-    
 
 }

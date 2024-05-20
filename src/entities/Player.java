@@ -31,6 +31,13 @@ public class Player extends Entity {
 	private int statusBarX = (int) (10 * Game.SCALE);
 	private int statusBarY = (int) (10 * Game.SCALE);
 
+	// Knowledge
+	private BufferedImage knowledgeBook;
+	private int bookCountWidth = (int) (28 * Game.SCALE);
+	private int bookCountHeight = (int) (35 * Game.SCALE);
+	private int bookCountX = (int) (50 * Game.SCALE);
+	private int bookCountY = (int) (7 * Game.SCALE);
+
 	private int flipX = 0;
 	private int flipW = 1;
 
@@ -40,6 +47,7 @@ public class Player extends Entity {
 		this.playing = playing;
 		this.state = IDLE;
 		this.health = 3;
+		this.books = 0;
 		this.walkSpeed = 1.0f * Game.SCALE;
 		loadAnimations();
 		initHitbox(23, 30);
@@ -54,11 +62,13 @@ public class Player extends Entity {
 	
 	public void update() {
 		//updateHealthBar();
-		if(health<=0){
+		if(health <= 0){
 			playing.setGameOver(true);
 			return;
 		}
 		updatePos();
+		if (moving)
+			checkBooksTouched();
 		updateAnimationTick();
 		setAnimation();
 
@@ -67,15 +77,25 @@ public class Player extends Entity {
 	// private void updateHealthBar() {	
 	// }
 
+	private void checkBooksTouched() {
+		playing.checkBooksTouched(hitbox);
+	}
+
 	public void render(Graphics g, int lvlOffSet) {
 		g.drawImage(animations[state][aniIndex], (int) (hitbox.x - xDrawOffSet) - lvlOffSet + flipX, 
 										(int) (hitbox.y - yDrawOffSet), width*flipW, height, null);
-		//drawHitbox(g, lvlOffSet);
+		// drawHitbox(g, lvlOffSet);
 		drawUI(g);
 	}
 	
 	private void drawUI(Graphics g) {
 		g.drawImage(statusBarImg[health], statusBarX, statusBarY, statusBarWidth, statusBarHeight, null);
+		if (books >= 1)
+			g.drawImage(knowledgeBook, bookCountX, bookCountY, bookCountWidth, bookCountHeight, null);
+		if (books >= 2)
+			g.drawImage(knowledgeBook, bookCountX + 35, bookCountY, bookCountWidth, bookCountHeight, null);
+	 	if (books == 3)
+			g.drawImage(knowledgeBook, bookCountX + 70, bookCountY, bookCountWidth, bookCountHeight, null);
 	}
 
 	private void updateAnimationTick() {
@@ -196,12 +216,18 @@ public class Player extends Entity {
 
 	public void changeHealth(int value){
 		this.health += value;
-		if(this.health <= 0){
+		if (this.health <= 0){
 			this.health = 0;
 			//game over
-		}else if(this.health >= 3){
+		} else if (this.health >= 3) { 
 			this.health = 3;
 		}
+	}
+
+	public void increaseKnowledge() {
+		this.books++;
+		if (this.books >= 3)
+			this.books = 3;
 	}
 
 	private void loadAnimations() {
@@ -209,7 +235,7 @@ public class Player extends Entity {
 			BufferedImage img = LoadSave.GetSpriteAtlas(LoadSave.PLAYER_ATLAS);
 			
 			animations = new BufferedImage[6][9];
-			//idle	
+			// IDLE	
 			for (int i = 0; i < 9; i++) 
 				animations[0][i] = img.getSubimage(i * 32, 0, 32, 32);
 			for (int i = 0; i < 6; i++) 
@@ -223,10 +249,15 @@ public class Player extends Entity {
 			for (int i = 0; i < 5; i++) 
 				animations[5][i] = img.getSubimage((i+18) * 32, 0, 32, 32);
 			
+			// Health
 			BufferedImage statusBar = LoadSave.GetSpriteAtlas(LoadSave.STATUS_BAR);
 			statusBarImg = new BufferedImage[4];
 			for (int i = 0; i < 4; i++) 
 				statusBarImg[i] = statusBar.getSubimage(i * 16, 0, 16,16);
+
+			// Knowledge
+			BufferedImage book = LoadSave.GetSpriteAtlas(LoadSave.KNOWLEDGE_BOOK_ATLAS);
+			knowledgeBook = book.getSubimage(0, 0, 28, 35);
 	}
 	
 	public void loadLvlData(int[][] lvlData) {
@@ -264,12 +295,17 @@ public class Player extends Entity {
 		this.jump = jump;
 	}
 
+	public int getBooks() {
+		return books;
+	}
+
 	public void resetAll() {
 		resetDirBooleans();
 		inAir = false;
 		moving = false;
 		state = IDLE;
 		health = 3;
+		books = 0;
 
 		hitbox.x = x;
 		hitbox.y = y;
