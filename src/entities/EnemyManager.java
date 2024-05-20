@@ -22,10 +22,14 @@ public class EnemyManager {
 
     private void addEnemies() {
         professors = LoadSave.GetProfessors();
+        traps = LoadSave.GetTraps();
     }
 
     public void update(int[][] lvlData, Player player){
         for(Professor p:professors){
+            p.update(lvlData, player);
+        }
+        for(Trap p:traps){
             p.update(lvlData, player);
         }
     }
@@ -53,6 +57,9 @@ public class EnemyManager {
         professorArr[1][0]=professorArr[3][0];
     }
 
+   
+    private BufferedImage[][] TrapArr;
+    private ArrayList<Trap> traps = new ArrayList<>();
     public void resetAllEnemies(){
         for(Professor p : professors){
             p.resetEnemy();
