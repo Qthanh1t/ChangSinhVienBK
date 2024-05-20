@@ -8,6 +8,10 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import javax.imageio.ImageIO;
 
+import entities.Professor;
+import entities.Trap;
+import main.Game;
+
 public class LoadSave {
 	
 	public static final String PLAYER_ATLAS = "huster.png";
@@ -29,6 +33,7 @@ public class LoadSave {
 	public static final String KNOWLEDGE_BOOK_ATLAS = "knowledge_book.png";
 	public static final String BOOKS_COLLECTION_FX = "book_fx.png";
 	public static final String TEST_POSITION_IMG = "exam.png";
+	public static final String TRAP_ATLAS = "trap.png";
 
 	public static BufferedImage GetSpriteAtlas(String fileName) {
 		BufferedImage img = null;
@@ -80,4 +85,31 @@ public class LoadSave {
 		return imgs;
 	}
 
+	public static ArrayList<Trap> GetTraps(){
+		BufferedImage img = GetSpriteAtlas(LEVEL_ONE_DATA);
+		ArrayList<Trap> list = new ArrayList<>();
+		for (int j = 0; j < img.getHeight(); j++) 
+			for (int i = 0; i < img.getWidth(); i++) {
+				Color color = new Color(img.getRGB(i, j));
+				int value = color.getBlue();
+				if (value == TRAP) 
+					list.add(new Trap(i*Game.TILES_SIZE, j*Game.TILES_SIZE));
+			}
+		return list;
+	}
+	public static int[][] GetLevelData() {
+		BufferedImage img = GetSpriteAtlas(LEVEL_ONE_DATA);
+		int[][] lvlData = new int[img.getHeight()][img.getWidth()];
+		
+		for (int j = 0; j < img.getHeight(); j++) 
+			for (int i = 0; i < img.getWidth(); i++) {
+				Color color = new Color(img.getRGB(i, j));
+				int value = color.getRed();
+				if (value >= 50) 
+					value = 0;
+				lvlData[j][i] = value;
+			}
+		return lvlData;
+		
+	}
 }

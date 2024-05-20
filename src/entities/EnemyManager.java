@@ -14,6 +14,8 @@ public class EnemyManager {
     private Playing playing;
     private BufferedImage[][] professorArr;
     private ArrayList<Professor> professors = new ArrayList<>();
+    private BufferedImage[][] TrapArr;
+    private ArrayList<Trap> traps = new ArrayList<>();
 
     public EnemyManager(Playing playing){
         this.playing=playing;
@@ -22,15 +24,20 @@ public class EnemyManager {
 
     public void loadEnemies(Level level) {
         professors = level.getProfessors();
+        traps = level.getTraps();
     }
 
-    public void update(int[][] lvlData, Player player){
+    public void update(int[][] lvlData, Player player) {
         for(Professor p : professors) 
             p.update(lvlData, player);
+        
 
+        for(Trap p : traps) {
+            p.update(lvlData, player);
+        }
     }
 
-    public void draw(Graphics g, int xLvlOffset){
+    public void draw(Graphics g, int xLvlOffset) {
         drawProfessors(g, xLvlOffset);
     }
 
