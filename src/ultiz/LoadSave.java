@@ -26,6 +26,9 @@ public class LoadSave {
 	public static final String PROFESSOR_SPRITE = "professor_sprite.png";
 	public static final String STATUS_BAR = "health.png";
 	public static final String COMPLETED_IMG = "completed_sprite.png";
+	public static final String KNOWLEDGE_BOOK_ATLAS = "knowledge_book.png";
+	public static final String BOOKS_COLLECTION_FX = "book_fx.png";
+	public static final String TEST_POSITION_IMG = "exam.png";
 
 	public static BufferedImage GetSpriteAtlas(String fileName) {
 		BufferedImage img = null;
