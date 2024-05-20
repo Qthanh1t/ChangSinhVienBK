@@ -1,6 +1,6 @@
 package ultiz;
 
-import static ultiz.Constants.EnemyConstants.PROFESSOR;
+import static ultiz.Constants.EnemyConstants.*;
 import static ultiz.Constants.ObjectConstants.*;
 
 import java.awt.Color;
@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import entities.Professor;
 import main.Game;
 import objects.Book;
+import objects.GameAddict;
 import objects.TestPosition;
 
 public class HelpMethods {
@@ -173,6 +174,18 @@ public class HelpMethods {
 				int value = color.getBlue();
 				if (value == TEST_POSITION) 
 					list.add(new TestPosition(i * Game.TILES_SIZE, j * Game.TILES_SIZE, value));
+			}
+		return list;
+	}
+
+	public static ArrayList<GameAddict> GetTraps(BufferedImage img){
+		ArrayList<GameAddict> list = new ArrayList<>();
+		for (int j = 0; j < img.getHeight(); j++) 
+			for (int i = 0; i < img.getWidth(); i++) {
+				Color color = new Color(img.getRGB(i, j));
+				int value = color.getBlue();
+				if (value == TRAP) 
+					list.add(new GameAddict(i * Game.TILES_SIZE, j * Game.TILES_SIZE, value));
 			}
 		return list;
 	}

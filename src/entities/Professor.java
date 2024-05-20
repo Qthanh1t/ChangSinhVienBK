@@ -58,9 +58,9 @@ public class Professor extends Enemy {
                         CheckEnemyHit(attackBox,player);
                     }
                     else {
-                        if(count>=200){
-                            attackChecked=false;
-                            count=0;
+                        if(count >= 200){
+                            attackChecked = false;
+                            count = 0;
                         } 
                         else count++;
                     }

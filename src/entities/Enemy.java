@@ -13,7 +13,7 @@ import main.Game;
 public abstract class Enemy extends Entity {
     protected int enemyType;
         
-    protected boolean firstUpdate=true;
+    protected boolean firstUpdate = true;
 
     protected int walkDir = LEFT;
     protected int tileY;
@@ -48,7 +48,7 @@ public abstract class Enemy extends Entity {
     protected void move(int [][] lvlData){
         float xSpeed=0;
 
-        if(walkDir==LEFT){
+        if(walkDir == LEFT){
             xSpeed = -walkSpeed;
         }
         else{
@@ -56,7 +56,7 @@ public abstract class Enemy extends Entity {
         }
         if(CanMoveHere(hitbox.x + xSpeed, hitbox.y, hitbox.width, hitbox.height, lvlData)){
             if(IsFloor(hitbox, xSpeed, lvlData)){
-                hitbox.x+=xSpeed;
+                hitbox.x += xSpeed;
                 return;
             }
         }
@@ -74,7 +74,7 @@ public abstract class Enemy extends Entity {
 
     protected boolean canSeePlayer(int [][] lvlData, Player player){
         int playerTileY = (int) (player.getHitbox().y / Game.TILES_SIZE);
-        if(playerTileY==tileY){
+        if(playerTileY == tileY){
             if(isPlayerInRange(player)){
                 if(isSideClear(lvlData, hitbox, player.hitbox, tileY)) return true;
             }
@@ -99,9 +99,9 @@ public abstract class Enemy extends Entity {
     }
 
     protected void CheckEnemyHit(Rectangle2D.Float attackBox, Player player) {
-        if(attackBox.intersects(player.getHitbox())){
+        if(attackBox.intersects(player.getHitbox())) {
             player.changeHealth(GetEnemyDmg(enemyType));
-            attackChecked=true;
+            attackChecked = true;
         }
         
     }

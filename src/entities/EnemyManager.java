@@ -14,8 +14,6 @@ public class EnemyManager {
     private Playing playing;
     private BufferedImage[][] professorArr;
     private ArrayList<Professor> professors = new ArrayList<>();
-    private BufferedImage[][] TrapArr;
-    private ArrayList<Trap> traps = new ArrayList<>();
 
     public EnemyManager(Playing playing){
         this.playing=playing;
@@ -24,17 +22,12 @@ public class EnemyManager {
 
     public void loadEnemies(Level level) {
         professors = level.getProfessors();
-        traps = level.getTraps();
     }
 
     public void update(int[][] lvlData, Player player) {
         for(Professor p : professors) 
             p.update(lvlData, player);
-        
-
-        for(Trap p : traps) {
-            p.update(lvlData, player);
-        }
+    
     }
 
     public void draw(Graphics g, int xLvlOffset) {
@@ -42,7 +35,7 @@ public class EnemyManager {
     }
 
     private void drawProfessors(Graphics g, int xLvlOffset) {
-        for(Professor p:professors){
+        for(Professor p : professors){
             g.drawImage(professorArr[p.getEnemyState()][p.getAniIndex()], (int)(p.getHitbox().x - xLvlOffset - PROFESSOR_DRAWOFFSET_X), (int) (p.getHitbox().y - PROFESSOR_DRAWOFFSET_Y), PROFESSOR_WIDTH, PROFESSOR_HEIGHT, null);
             //p.drawHitbox(g, xLvlOffset);
             //p.drawAttackBox(g, xLvlOffset);
@@ -50,6 +43,7 @@ public class EnemyManager {
     }
 
     private void loadEnemyImgs() {
+        // Professor
         professorArr = new BufferedImage[5][9];
         BufferedImage temp = LoadSave.GetSpriteAtlas(LoadSave.PROFESSOR_SPRITE);
         for(int i=0;i<9;i++){
@@ -58,10 +52,11 @@ public class EnemyManager {
         }
         professorArr[0][0]=professorArr[2][0];
         professorArr[1][0]=professorArr[3][0];
+
     }
 
     public void resetAllEnemies(){
-        for(Professor p : professors){
+        for (Professor p : professors) {
             p.resetEnemy();
         }
     }

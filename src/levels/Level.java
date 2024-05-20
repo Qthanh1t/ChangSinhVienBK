@@ -7,12 +7,14 @@ import java.util.ArrayList;
 import entities.Professor;
 import main.Game;
 import objects.Book;
+import objects.GameAddict;
 import objects.TestPosition;
 import ultiz.HelpMethods;
 
 import static ultiz.HelpMethods.GetLevelData;
 import static ultiz.HelpMethods.GetPlayerSpawn;
-import static ultiz.HelpMethods.GetProfessors;;
+import static ultiz.HelpMethods.GetProfessors;
+import static ultiz.HelpMethods.GetTraps;
 
 public class Level {
 
@@ -21,6 +23,7 @@ public class Level {
 	private ArrayList<Professor> professors;
 	private ArrayList<Book> knowledgeBooks;
 	private ArrayList<TestPosition> testPosition;
+	private ArrayList<GameAddict> traps;
 	private int lvlTilesWide;
 	private int maxTilesOffset;
 	private int maxLvlOffsetX;
@@ -32,10 +35,15 @@ public class Level {
 		createEnemies();
 		createBooks();
 		createTestPos();
+		createTraps();
 		calcLvlOffsets();
 		calcPlayerSpawn();
 	}
 	
+	private void createTraps() {
+		traps = GetTraps(img);
+	}
+
 	private void createTestPos() {
 		testPosition = HelpMethods.GetTestPos(img);
 	}
@@ -76,6 +84,10 @@ public class Level {
 
 	public ArrayList<Professor> getProfessors() {
 		return professors;
+	}
+
+	public ArrayList<GameAddict> getTraps() {
+		return traps;
 	}
 
 	public Point getPlayerSpawn() {

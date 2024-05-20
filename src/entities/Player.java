@@ -67,8 +67,10 @@ public class Player extends Entity {
 			return;
 		}
 		updatePos();
-		if (moving)
+		if (moving) {
 			checkBooksTouched();
+			checkTrapsTouched();
+		}
 		updateAnimationTick();
 		setAnimation();
 
@@ -76,6 +78,10 @@ public class Player extends Entity {
 	
 	// private void updateHealthBar() {	
 	// }
+
+	private void checkTrapsTouched() {
+		playing.checkTrapsTouched(this);
+	}
 
 	private void checkBooksTouched() {
 		playing.checkBooksTouched(hitbox);
@@ -223,6 +229,10 @@ public class Player extends Entity {
 			this.health = 3;
 		}
 	}
+
+	public void kill() {
+        this.health = 0;
+    }
 
 	public void increaseKnowledge() {
 		this.books++;

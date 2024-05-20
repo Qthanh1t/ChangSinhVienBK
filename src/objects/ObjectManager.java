@@ -5,6 +5,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+import entities.Player;
 import gamestates.Playing;
 import levels.Level;
 import ultiz.LoadSave;
@@ -15,12 +16,21 @@ public class ObjectManager {
     private Playing playing;
     private BufferedImage[] bookImgs;
     private BufferedImage testPosImg;
+    private BufferedImage trapImg;
     private ArrayList<Book> knowledgeBooks;
     private ArrayList<TestPosition> testPosition;
+    private ArrayList<GameAddict> traps;
+
 
     public ObjectManager(Playing playing) {
         this.playing = playing;
         loadImgs();
+    }
+
+    public void checkTrapsTouched(Player p) {
+        for (GameAddict t : traps)
+            if (t.getHitbox().intersects(p.getHitbox()))
+                p.kill(); 
     }
 
     public void checkObjectTouched(Rectangle2D.Float hitbox) {
@@ -46,6 +56,7 @@ public class ObjectManager {
     public void loadObjects(Level newLevel) {
         knowledgeBooks = newLevel.getBooks();
         testPosition = newLevel.getTestPos();
+        traps = newLevel.getTraps();
     }
 
     private void loadImgs() {
@@ -56,6 +67,8 @@ public class ObjectManager {
             bookImgs[i] = bookSprite.getSubimage(28 * i, 0, 28, 35);
 
         testPosImg = LoadSave.GetSpriteAtlas(LoadSave.TEST_POSITION_IMG);
+
+        trapImg = LoadSave.GetSpriteAtlas(LoadSave.TRAP_ATLAS);
     }
 
     public void update() {
@@ -68,8 +81,19 @@ public class ObjectManager {
     public void draw(Graphics g, int xLvlOffset) {
         drawBook(g, xLvlOffset);
         drawTestPos(g, xLvlOffset);
+        drawTraps(g, xLvlOffset);
     }
 
+    private void drawTraps(Graphics g, int xLvlOffset) {
+        for (GameAddict t : traps)
+            g.drawImage(trapImg,
+                (int) (t.getHitbox().x - xLvlOffset),
+                (int) (t.getHitbox().y - t.getyDrawOffset()), 
+                TRAP_WIDTH,
+                TRAP_HEIGHT,
+                null);
+    }
+    
     private void drawTestPos(Graphics g, int xLvlOffset) {
         for (TestPosition t : testPosition)
             g.drawImage(testPosImg,

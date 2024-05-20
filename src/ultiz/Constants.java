@@ -12,6 +12,7 @@ public class Constants {
 	public static class ObjectConstants {
 		public static final int KNOWLEDGE_BOOK = 0;
 		public static final int TEST_POSITION = 1;
+		public static final int TRAP = 2;
 
 		public static final int KNOWLEDGE_BOOK_VALUE = 1;
 
@@ -25,6 +26,11 @@ public class Constants {
 		public static final int TEST_POSITION_WIDTH = (int) (TEST_POSITION_WIDTH_DEFAULT * Game.SCALE);
 		public static final int TEST_POSITION_HEIGHT = (int) (TEST_POSITION_HEIGHT_DEFAULT * Game.SCALE);
 
+		public static final int TRAP_WIDTH_DEFAULT = 32;
+		public static final int TRAP_HEIGHT_DEFAULT = 32;
+		public static final int TRAP_WIDTH = (int) (TRAP_WIDTH_DEFAULT * Game.SCALE);
+		public static final int TRAP_HEIGHT = (int) (TRAP_HEIGHT_DEFAULT * Game.SCALE);
+
 		public static int GetSpriteAmount(int object_type) {
 			switch (object_type) {
 				case KNOWLEDGE_BOOK:
@@ -36,7 +42,6 @@ public class Constants {
 
 	public static class EnemyConstants {
 		public static final int PROFESSOR = 0;
-		public static final int TRAP = 2;
 
 		public static final int IDLE_LEFT = 0;
 		public static final int IDLE_RIGHT = 1;
@@ -46,18 +51,13 @@ public class Constants {
 		
 		public static final int PROFESSOR_WIDTH_DEFAULT = 64;
 		public static final int PROFESSOR_HEIGHT_DEFAULT = 64;
-		public static final int TRAP_WIDTH_DEFAULT = 32;
-		public static final int TRAP_HEIGHT_DEFAULT = 32;
 
 		public static final int PROFESSOR_WIDTH = (int) (0.8 * PROFESSOR_WIDTH_DEFAULT * Game.SCALE);
 		public static final int PROFESSOR_HEIGHT = (int) (0.7 * PROFESSOR_HEIGHT_DEFAULT * Game.SCALE);
-		public static final int TRAP_WIDTH = (int) (0.8 * TRAP_WIDTH_DEFAULT * Game.SCALE);
-		public static final int TRAP_HEIGHT = (int)(0.7 * TRAP_HEIGHT_DEFAULT * Game.SCALE);
 
 		public static final int PROFESSOR_DRAWOFFSET_X = (int) (0.8 * 20 * Game.SCALE);
 		public static final int PROFESSOR_DRAWOFFSET_Y = (int) (1.0 * 10 * Game.SCALE);
 		
-
 		public static int GetSpriteAmount(int enemy_type, int enemy_state){
 			switch (enemy_type) {
 				case PROFESSOR:
@@ -69,9 +69,7 @@ public class Constants {
 						case IDLE_RIGHT:
 							return 1;
 						
-					}
-				case TRAP:
-                    return 1;  
+					} 
 			}
 			return 0;
 		}
@@ -162,8 +160,6 @@ public class Constants {
 		switch (enemy_type) {
 			case PROFESSOR:
 				return -1;
-			case TRAP:
-			    return -3;
 			default:
 				return 0;
 		}

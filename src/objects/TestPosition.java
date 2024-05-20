@@ -1,7 +1,5 @@
 package objects;
 
-import static ultiz.Constants.ObjectConstants.*;
-
 import main.Game;
 
 public class TestPosition extends GameObject {
