@@ -1,20 +1,12 @@
 package ultiz;
 
-import static ultiz.Constants.EnemyConstants.*;
-
-import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.ArrayList;
-
 import javax.imageio.ImageIO;
-
-import entities.Professor;
-import main.Game;
 
 public class LoadSave {
 	

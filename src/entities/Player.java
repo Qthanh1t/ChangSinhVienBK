@@ -3,6 +3,7 @@ package entities;
 import static ultiz.Constants.PlayerConstants.*;
 import static ultiz.HelpMethods.*;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 
 import gamestates.Playing;
@@ -45,6 +46,13 @@ public class Player extends Entity {
 		this.playing = playing;
 		loadAnimations();
 		initHitbox(x, y, (int) (23 * Game.SCALE), (int) (30 * Game.SCALE));
+	}
+
+	public void setSpawn(Point spawn) {
+		this.x = spawn.x;
+		this.y = spawn.y;
+		hitbox.x = x;
+		hitbox.y = y;
 	}
 	
 	public void update() {

@@ -25,13 +25,9 @@ public class EnemyManager {
     }
 
     public void update(int[][] lvlData, Player player){
-        boolean isAnyActive = false;
-        for(Professor p : professors) {
+        for(Professor p : professors) 
             p.update(lvlData, player);
-            isAnyActive = true;
-        }
-        if (!isAnyActive)
-            playing.setLevelCompleted(true);
+
     }
 
     public void draw(Graphics g, int xLvlOffset){

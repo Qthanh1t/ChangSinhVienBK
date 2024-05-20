@@ -1,11 +1,13 @@
 package levels;
 
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import entities.Professor;
 import main.Game;
 import static ultiz.HelpMethods.GetLevelData;
+import static ultiz.HelpMethods.GetPlayerSpawn;
 import static ultiz.HelpMethods.GetProfessors;;
 
 public class Level {
@@ -16,14 +18,20 @@ public class Level {
 	private int lvlTilesWide;
 	private int maxTilesOffset;
 	private int maxLvlOffsetX;
+	private Point playerSpawn;
 	
 	public Level(BufferedImage img) {
 		this.img = img;
 		createLevelData();
 		createEnemies();
 		calcLvlOffsets();
+		calcPlayerSpawn();
 	}
 	
+	private void calcPlayerSpawn() {
+		playerSpawn = GetPlayerSpawn(img);
+	}
+
 	private void calcLvlOffsets() {
 		lvlTilesWide = img.getWidth();
 		maxTilesOffset = lvlTilesWide - Game.TILES_IN_WIDTH;
@@ -52,6 +60,10 @@ public class Level {
 
 	public ArrayList<Professor> getProfessors() {
 		return professors;
+	}
+
+	public Point getPlayerSpawn() {
+		return playerSpawn;
 	}
 	
 }
