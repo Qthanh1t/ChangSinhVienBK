@@ -30,6 +30,8 @@ public class GameObject {
             aniIndex++;
             if(aniIndex >= GetSpriteAmount(objType)) {
                 aniIndex = 0;
+            }else if(objType==GIRL_LEFT || objType==GIRL_RIGHT){
+                doAnimation=false;
             }   
         }
     }
@@ -39,8 +41,9 @@ public class GameObject {
         aniTick = 0;
         active = true;
 
-        if (objType == KNOWLEDGE_BOOK)
+        if (objType == KNOWLEDGE_BOOK || objType == GIRL_LEFT || objType == GIRL_RIGHT)
             doAnimation = true;
+        else doAnimation = false;
     }
 
     protected void initHitbox(int width, int height) {

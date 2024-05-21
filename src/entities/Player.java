@@ -21,7 +21,7 @@ public class Player extends Entity {
 	private float yDrawOffSet = 9 * Game.SCALE;
 	
 	// Jumping / Gravity
-	private float jumpSpeed = -2.3f * Game.SCALE;
+	private float jumpSpeed = -2.4f * Game.SCALE;
 	private float fallSpeedAfterCollision = 0.4f * Game.SCALE;
 
 	// StatusBar
@@ -42,6 +42,8 @@ public class Player extends Entity {
 	private int flipW = 1;
 
 	private Playing playing;
+	private int tileY=0;
+
 	public Player(float x, float y, int width, int height, Playing playing) {
 		super(x, y, width, height);
 		this.playing = playing;
@@ -70,6 +72,7 @@ public class Player extends Entity {
 		if (moving) {
 			checkBooksTouched();
 			checkTrapsTouched();
+			tileY = (int) (hitbox.y/Game.TILES_SIZE);
 		}
 		updateAnimationTick();
 		setAnimation();
@@ -324,4 +327,7 @@ public class Player extends Entity {
 				inAir = true;
 	}
 	
+	public int getTileY(){
+		return tileY;
+	}
 }
