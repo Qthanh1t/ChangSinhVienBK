@@ -85,13 +85,15 @@ public class ObjectManager {
     }
 
     private void drawTraps(Graphics g, int xLvlOffset) {
-        for (GameAddict t : traps)
+        for (GameAddict t : traps) {
             g.drawImage(trapImg,
                 (int) (t.getHitbox().x - xLvlOffset),
                 (int) (t.getHitbox().y - t.getyDrawOffset()), 
                 TRAP_WIDTH,
                 TRAP_HEIGHT,
                 null);
+            t.drawHitbox(g, xLvlOffset);
+        }
     }
     
     private void drawTestPos(Graphics g, int xLvlOffset) {
@@ -120,7 +122,5 @@ public class ObjectManager {
         for (Book b : knowledgeBooks)
             b.reset();
 
-        for (TestPosition t : testPosition)
-            t.reset();
     }
 }
