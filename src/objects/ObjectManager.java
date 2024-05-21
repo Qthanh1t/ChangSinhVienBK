@@ -160,7 +160,7 @@ public class ObjectManager {
         for(Projectile p: projectiles)
             if(p.isActive()){
                 g.drawImage(heartImg,(int) (p.getHitbox().x - xLvlOffset),(int) (p.getHitbox().y), HEART_WIDTH, HEART_HEIGHT, null);
-                p.drawHitbox(g, xLvlOffset);
+                //p.drawHitbox(g, xLvlOffset);
             }
     }
 
@@ -185,7 +185,7 @@ public class ObjectManager {
                 TRAP_WIDTH,
                 TRAP_HEIGHT,
                 null);
-            t.drawHitbox(g, xLvlOffset);
+            //t.drawHitbox(g, xLvlOffset);
         }
     }
     
