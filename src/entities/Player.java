@@ -17,7 +17,7 @@ public class Player extends Entity {
 	private boolean moving = false; //attacking = false;
 	private boolean left, right, jump;
 	private int[][] lvlData;
-	private float xDrawOffSet = 9 * Game.SCALE;
+	private float xDrawOffSet = 15 * Game.SCALE;
 	private float yDrawOffSet = 9 * Game.SCALE;
 	
 	// Jumping / Gravity
@@ -52,7 +52,7 @@ public class Player extends Entity {
 		this.books = 0;
 		this.walkSpeed = 1.0f * Game.SCALE;
 		loadAnimations();
-		initHitbox(23, 30);
+		initHitbox(17, 30);
 	}
 
 	public void setSpawn(Point spawn) {
@@ -93,7 +93,7 @@ public class Player extends Entity {
 	public void render(Graphics g, int lvlOffSet) {
 		g.drawImage(animations[state][aniIndex], (int) (hitbox.x - xDrawOffSet) - lvlOffSet + flipX, 
 										(int) (hitbox.y - yDrawOffSet), width*flipW, height, null);
-		// drawHitbox(g, lvlOffSet);
+		drawHitbox(g, lvlOffSet);
 		drawUI(g);
 	}
 	

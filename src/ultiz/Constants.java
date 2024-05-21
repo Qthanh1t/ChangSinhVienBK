@@ -9,6 +9,16 @@ public class Constants {
 	public static final float GRAVITY = 0.04f * Game.SCALE;
 	public static final int ANI_SPEED = 25;
 
+	public static class Projectiles{
+		public static final int HEART_DEFAULT_WIDTH = 16; 
+		public static final int HEART_DEFAULT_HEIGHT = 16; 
+		public static final int HEART_WIDTH = (int)(HEART_DEFAULT_WIDTH*Game.SCALE); 
+		public static final int HEART_HEIGHT = (int)(HEART_DEFAULT_HEIGHT*Game.SCALE); 
+		public static final float SPEED = 0.6f * Game.SCALE; 
+		
+		
+	}
+
 	public static class ObjectConstants {
 		public static final int KNOWLEDGE_BOOK = 0;
 		public static final int TEST_POSITION = 1;

@@ -14,6 +14,7 @@ import main.Game;
 import objects.Book;
 import objects.GameAddict;
 import objects.Girl;
+import objects.Projectile;
 import objects.TestPosition;
 
 public class HelpMethods {
@@ -49,6 +50,9 @@ public class HelpMethods {
 		return false;
 	}
 
+	public static boolean IsProjectileHittingLevel(Projectile p, int[][] lvlData){
+		return IsSolid(p.getHitbox().x+p.getHitbox().width/2, p.getHitbox().y+p.getHitbox().height/2, lvlData);
+	}
 	
 	public static float GetEntityXNextToWall(Rectangle2D.Float hitbox, float xSpeed) {
 		int currentTile = (int) ((hitbox.x) / Game.TILES_SIZE);
@@ -204,7 +208,7 @@ public class HelpMethods {
 				Color color = new Color(img.getRGB(i, j));
 				int value = color.getBlue();
 				if (value == TRAP) 
-					list.add(new GameAddict(i * Game.TILES_SIZE, j * Game.TILES_SIZE, value));
+					list.add(new GameAddict(i * Game.TILES_SIZE+15, j * Game.TILES_SIZE+15, value));
 			}
 		return list;
 	}
