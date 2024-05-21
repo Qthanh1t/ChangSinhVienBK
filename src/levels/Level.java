@@ -8,6 +8,7 @@ import entities.Professor;
 import main.Game;
 import objects.Book;
 import objects.GameAddict;
+import objects.Girl;
 import objects.TestPosition;
 import ultiz.HelpMethods;
 
@@ -24,6 +25,7 @@ public class Level {
 	private ArrayList<Book> knowledgeBooks;
 	private ArrayList<TestPosition> testPosition;
 	private ArrayList<GameAddict> traps;
+	private ArrayList<Girl> girls;
 	private int lvlTilesWide;
 	private int maxTilesOffset;
 	private int maxLvlOffsetX;
@@ -36,10 +38,15 @@ public class Level {
 		createBooks();
 		createTestPos();
 		createTraps();
+		createGirls();
 		calcLvlOffsets();
 		calcPlayerSpawn();
 	}
 	
+	private void createGirls() {
+		girls = HelpMethods.GetGirls(img);
+	}
+
 	private void createTraps() {
 		traps = GetTraps(img);
 	}
@@ -100,6 +107,10 @@ public class Level {
 
 	public ArrayList<TestPosition> getTestPos() {
 		return testPosition;
+	}
+
+	public ArrayList<Girl> getGirls(){
+		return girls;
 	}
 	
 }

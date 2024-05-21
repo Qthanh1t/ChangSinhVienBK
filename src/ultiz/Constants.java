@@ -9,10 +9,22 @@ public class Constants {
 	public static final float GRAVITY = 0.04f * Game.SCALE;
 	public static final int ANI_SPEED = 25;
 
+	public static class Projectiles{
+		public static final int HEART_DEFAULT_WIDTH = 16; 
+		public static final int HEART_DEFAULT_HEIGHT = 16; 
+		public static final int HEART_WIDTH = (int)(HEART_DEFAULT_WIDTH*Game.SCALE); 
+		public static final int HEART_HEIGHT = (int)(HEART_DEFAULT_HEIGHT*Game.SCALE); 
+		public static final float SPEED = 0.6f * Game.SCALE; 
+		
+		
+	}
+
 	public static class ObjectConstants {
 		public static final int KNOWLEDGE_BOOK = 0;
 		public static final int TEST_POSITION = 1;
 		public static final int TRAP = 2;
+		public static final int GIRL_LEFT = 3;
+		public static final int GIRL_RIGHT = 4;
 
 		public static final int KNOWLEDGE_BOOK_VALUE = 1;
 
@@ -31,10 +43,19 @@ public class Constants {
 		public static final int TRAP_WIDTH = (int) (TRAP_WIDTH_DEFAULT * Game.SCALE);
 		public static final int TRAP_HEIGHT = (int) (TRAP_HEIGHT_DEFAULT * Game.SCALE);
 
+		public static final int GIRL_WIDTH_DEFAULT = 192;
+		public static final int GIRL_HEIGHT_DEFAULT = 150;
+		public static final int GIRL_WIDTH =(int) (GIRL_WIDTH_DEFAULT*0.16*Game.SCALE);
+		public static final int GIRL_HEIGHT = (int) (GIRL_HEIGHT_DEFAULT*0.16*Game.SCALE);
+
+
 		public static int GetSpriteAmount(int object_type) {
 			switch (object_type) {
 				case KNOWLEDGE_BOOK:
 					return 42;
+				case GIRL_LEFT:
+				case GIRL_RIGHT:
+					return 6;
 			}
 			return 1;
 		}

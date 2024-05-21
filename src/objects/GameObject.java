@@ -15,7 +15,7 @@ public class GameObject {
     protected Rectangle2D.Float hitbox;
     protected boolean doAnimation, active = true;
     protected int aniTick, aniIndex;
-    protected int xDrawOffset, yDrawOffset;
+    protected int xDrawOffset=5, yDrawOffset=5;
 
     public GameObject(int x, int y, int objType) {
         this.x = x;
@@ -30,6 +30,9 @@ public class GameObject {
             aniIndex++;
             if(aniIndex >= GetSpriteAmount(objType)) {
                 aniIndex = 0;
+                if(objType==GIRL_LEFT || objType==GIRL_RIGHT)
+                    doAnimation=false;
+
             }   
         }
     }
@@ -39,8 +42,9 @@ public class GameObject {
         aniTick = 0;
         active = true;
 
-        if (objType == KNOWLEDGE_BOOK)
+        if (objType == KNOWLEDGE_BOOK || objType == GIRL_LEFT || objType == GIRL_RIGHT)
             doAnimation = true;
+        else doAnimation = false;
     }
 
     protected void initHitbox(int width, int height) {
@@ -80,5 +84,10 @@ public class GameObject {
     public int getAniIndex() {
         return aniIndex;
     }
-    
+    public int getAniTick(){
+        return aniTick;
+    }
+    public void setAnimation(boolean doAnimation){
+        this.doAnimation=doAnimation;
+    }
 }
