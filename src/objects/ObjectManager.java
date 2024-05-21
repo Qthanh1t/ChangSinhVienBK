@@ -8,18 +8,27 @@ import java.util.ArrayList;
 import entities.Player;
 import gamestates.Playing;
 import levels.Level;
+import main.Game;
 import ultiz.LoadSave;
 import static ultiz.Constants.ObjectConstants.*;
+import static ultiz.Constants.Projectiles.HEART_HEIGHT;
+import static ultiz.Constants.Projectiles.HEART_WIDTH;
+import static ultiz.HelpMethods.CanGirlSeePlayer;
+import static ultiz.HelpMethods.IsProjectileHittingLevel;
 
 public class ObjectManager {
 
     private Playing playing;
     private BufferedImage[] bookImgs;
+    private BufferedImage[] girlImgs;
     private BufferedImage testPosImg;
     private BufferedImage trapImg;
+    private BufferedImage heartImg;
     private ArrayList<Book> knowledgeBooks;
     private ArrayList<TestPosition> testPosition;
     private ArrayList<GameAddict> traps;
+    private ArrayList<Girl> girls;
+    private ArrayList<Projectile> projectiles=new ArrayList<>();
 
 
     public ObjectManager(Playing playing) {
@@ -57,6 +66,8 @@ public class ObjectManager {
         knowledgeBooks = newLevel.getBooks();
         testPosition = newLevel.getTestPos();
         traps = newLevel.getTraps();
+        girls = newLevel.getGirls();
+        projectiles.clear();
     }
 
     private void loadImgs() {
@@ -69,29 +80,113 @@ public class ObjectManager {
         testPosImg = LoadSave.GetSpriteAtlas(LoadSave.TEST_POSITION_IMG);
 
         trapImg = LoadSave.GetSpriteAtlas(LoadSave.TRAP_ATLAS);
+
+        girlImgs = new BufferedImage[6];
+        BufferedImage temp = LoadSave.GetSpriteAtlas(LoadSave.GIRL);
+        for(int i=0;i<6;i++){
+            girlImgs[i] = temp.getSubimage(i*192 + 228,720, 192, 150);
+        }
+        heartImg = LoadSave.GetSpriteAtlas(LoadSave.HEART);
     }
 
-    public void update() {
+    public void update(int [][] lvlData, Player player) {
         for (Book b : knowledgeBooks)
             if (b.isActive())
                 b.update();
-        
+        updateGirl(lvlData, player);
+        updateProjectile(lvlData, player);
+    }
+
+    private void updateProjectile(int[][] lvlData, Player player) {
+        for(Projectile p:projectiles){
+            if(p.isActive()){
+                p.updatePos();
+                if(p.getHitbox().intersects(player.getHitbox())){
+                    player.changeHealth(-1);
+                    p.setActive(false);
+                }else if(IsProjectileHittingLevel(p, lvlData))
+                    p.setActive(false);
+            }
+               
+        }
+    }
+
+    private boolean isPlayerInFrontOfGirl(Girl g, Player player) {
+        if(g.getObjType() == GIRL_LEFT){
+            if(g.getHitbox().x>player.getHitbox().x) return true;
+            
+        }else if(g.getHitbox().x<player.getHitbox().x) return true;
+        return false;
+    }
+
+    private void updateGirl(int[][] lvlData, Player player) {
+        for(Girl g:girls){
+            if(!g.doAnimation)
+                if(g.getTileY()==player.getTileY())
+                    if(isPlayerInRange(g, player))
+                        if(isPlayerInFrontOfGirl(g, player))
+                            if(CanGirlSeePlayer(lvlData, player.getHitbox(), g.getHitbox(), g.getTileY())){
+                                g.setAnimation(true);
+                            }
+            g.update();
+            if(g.getAniIndex()==5 && g.getAniTick()==0)
+                kissGirl(g);
+        }
+    }
+
+
+    private void kissGirl(Girl g) {
+        int dir = 1;
+        if(g.getObjType()==GIRL_LEFT){
+            dir=-1;
+        }
+        projectiles.add(new Projectile((int)g.getHitbox().x,(int) g.getHitbox().y, dir));
+    }
+
+    private boolean isPlayerInRange(Girl g, Player player) {
+        int absValue =(int) Math.abs(player.getHitbox().x - g.getHitbox().x);
+        return absValue <= Game.TILES_SIZE*5;
     }
 
     public void draw(Graphics g, int xLvlOffset) {
         drawBook(g, xLvlOffset);
         drawTestPos(g, xLvlOffset);
         drawTraps(g, xLvlOffset);
+        drawGirls(g, xLvlOffset);
+        drawProjectiles(g, xLvlOffset);
+    }
+
+    private void drawProjectiles(Graphics g, int xLvlOffset) {
+        for(Projectile p: projectiles)
+            if(p.isActive()){
+                g.drawImage(heartImg,(int) (p.getHitbox().x - xLvlOffset),(int) (p.getHitbox().y), HEART_WIDTH, HEART_HEIGHT, null);
+                //p.drawHitbox(g, xLvlOffset);
+            }
+    }
+
+    private void drawGirls(Graphics g, int xLvlOffset) {
+        for(Girl gi:girls){
+            int x = (int) (gi.getHitbox().x - xLvlOffset);
+            int width =(int) (GIRL_WIDTH*1.5);
+            if(gi.getObjType()==GIRL_LEFT){
+                x+=width;
+                width *= -1;
+            }
+            g.drawImage(girlImgs[gi.getAniIndex()], x, (int) (gi.getHitbox().y), width,(int) (GIRL_HEIGHT*1.5), null);
+            //gi.drawHitbox(g, xLvlOffset);
+        }
     }
 
     private void drawTraps(Graphics g, int xLvlOffset) {
-        for (GameAddict t : traps)
+        for (GameAddict t : traps){
             g.drawImage(trapImg,
-                (int) (t.getHitbox().x - xLvlOffset),
-                (int) (t.getHitbox().y - t.getyDrawOffset()), 
+                (int) (t.getHitbox().x - xLvlOffset -5),
+                (int) (t.getHitbox().y - t.getyDrawOffset()-5), 
                 TRAP_WIDTH,
                 TRAP_HEIGHT,
                 null);
+            //t.drawHitbox(g, xLvlOffset);
+        }
     }
     
     private void drawTestPos(Graphics g, int xLvlOffset) {
@@ -117,10 +212,14 @@ public class ObjectManager {
     }
 
     public void resetAllObjects() {
+        loadObjects(playing.getLevelManager().getCurrentLevel());
         for (Book b : knowledgeBooks)
             b.reset();
 
         for (TestPosition t : testPosition)
             t.reset();
+        for (Girl gi : girls){
+            gi.reset();
+        }
     }
 }
