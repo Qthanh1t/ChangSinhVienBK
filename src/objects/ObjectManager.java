@@ -186,12 +186,12 @@ public class ObjectManager {
     private void drawTraps(Graphics g, int xLvlOffset) {
         for (GameAddict t : traps){
             g.drawImage(trapImg,
-                (int) (t.getHitbox().x - xLvlOffset -5),
-                (int) (t.getHitbox().y - t.getyDrawOffset()-5), 
+                (int) (t.getHitbox().x - xLvlOffset - 9),
+                (int) (t.getHitbox().y - t.getyDrawOffset()), 
                 TRAP_WIDTH,
                 TRAP_HEIGHT,
                 null);
-            //t.drawHitbox(g, xLvlOffset);
+            t.drawHitbox(g, xLvlOffset);
         }
     }
     

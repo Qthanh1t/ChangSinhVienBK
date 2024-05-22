@@ -15,7 +15,7 @@ public class GameObject {
     protected Rectangle2D.Float hitbox;
     protected boolean doAnimation, active = true;
     protected int aniTick, aniIndex;
-    protected int xDrawOffset=5, yDrawOffset=5;
+    protected int xDrawOffset = 5, yDrawOffset = 5;
 
     public GameObject(int x, int y, int objType) {
         this.x = x;
