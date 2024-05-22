@@ -1,7 +1,5 @@
 package objects;
 
-import static ultiz.Constants.ObjectConstants.TRAP;
-
 public class GameAddict extends GameObject {
 
     public GameAddict(int x, int y, int objType) {
