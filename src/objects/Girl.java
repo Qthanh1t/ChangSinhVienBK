@@ -12,6 +12,8 @@ public class Girl extends GameObject {
         super(x, y, objType);
         tileY =(int) (y/Game.TILES_SIZE);
         initHitbox(GIRL_WIDTH, GIRL_HEIGHT);
+
+        hitbox.y -= (int) (2 * Game.SCALE);
         // sua vi tri hit box
     }
 

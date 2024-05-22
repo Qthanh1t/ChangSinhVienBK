@@ -83,9 +83,10 @@ public class ObjectManager {
 
         girlImgs = new BufferedImage[6];
         BufferedImage temp = LoadSave.GetSpriteAtlas(LoadSave.GIRL);
-        for(int i=0;i<6;i++){
+        for(int i = 0; i < 6; i++){
             girlImgs[i] = temp.getSubimage(i*192 + 228,720, 192, 150);
         }
+        
         heartImg = LoadSave.GetSpriteAtlas(LoadSave.HEART);
     }
 
@@ -167,13 +168,18 @@ public class ObjectManager {
     private void drawGirls(Graphics g, int xLvlOffset) {
         for(Girl gi:girls){
             int x = (int) (gi.getHitbox().x - xLvlOffset);
-            int width =(int) (GIRL_WIDTH*1.5);
-            if(gi.getObjType()==GIRL_LEFT){
-                x+=width;
+            int width =(int) (GIRL_WIDTH * 1.5);
+            if(gi.getObjType() == GIRL_LEFT){
+                x += width;
                 width *= -1;
             }
-            g.drawImage(girlImgs[gi.getAniIndex()], x, (int) (gi.getHitbox().y), width,(int) (GIRL_HEIGHT*1.5), null);
-            //gi.drawHitbox(g, xLvlOffset);
+            g.drawImage(girlImgs[gi.getAniIndex()], 
+                        x, 
+                        (int) (gi.getHitbox().y), 
+                        width,
+                        (int) (GIRL_HEIGHT*1.5), 
+                        null);
+            gi.drawHitbox(g, xLvlOffset);
         }
     }
 

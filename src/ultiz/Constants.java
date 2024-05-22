@@ -45,8 +45,8 @@ public class Constants {
 
 		public static final int GIRL_WIDTH_DEFAULT = 192;
 		public static final int GIRL_HEIGHT_DEFAULT = 150;
-		public static final int GIRL_WIDTH =(int) (GIRL_WIDTH_DEFAULT*0.16*Game.SCALE);
-		public static final int GIRL_HEIGHT = (int) (GIRL_HEIGHT_DEFAULT*0.16*Game.SCALE);
+		public static final int GIRL_WIDTH =(int) (GIRL_WIDTH_DEFAULT* 0.16 * Game.SCALE);
+		public static final int GIRL_HEIGHT = (int) (GIRL_HEIGHT_DEFAULT * 0.16 *Game.SCALE);
 
 
 		public static int GetSpriteAmount(int object_type) {
