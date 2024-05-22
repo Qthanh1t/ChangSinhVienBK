@@ -33,6 +33,8 @@ public class LoadSave {
 	public static final String BOOKS_COLLECTION_FX = "book_fx.png";
 	public static final String TEST_POSITION_IMG = "exam.png";
 	public static final String TRAP_ATLAS = "trap.png";
+	public static final String GIRL = "girl.png";
+	public static final String HEART = "heart.png";
 
 	public static BufferedImage GetSpriteAtlas(String fileName) {
 		BufferedImage img = null;
