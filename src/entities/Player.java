@@ -65,7 +65,18 @@ public class Player extends Entity {
 	public void update() {
 		//updateHealthBar();
 		if(health <= 0){
-			playing.setGameOver(true);
+			if(state!=DEAD){
+				state=DEAD;
+				aniTick=0;
+				aniIndex=0;
+				playing.setPlayerDying(true);
+			}
+			else if(aniIndex==GetSpriteAmount(DEAD)-1 && aniTick>=ANI_SPEED-1){
+				playing.setGameOver(true);
+			}else{
+				updateAnimationTick();
+			}
+			
 			return;
 		}
 		updatePos();
@@ -316,6 +327,7 @@ public class Player extends Entity {
 		resetDirBooleans();
 		inAir = false;
 		moving = false;
+		jump = false;
 		state = IDLE;
 		health = 3;
 		books = 0;
