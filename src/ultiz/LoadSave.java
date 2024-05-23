@@ -8,14 +8,10 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import javax.imageio.ImageIO;
 
-import entities.Professor;
-import main.Game;
-
 public class LoadSave {
 	
 	public static final String PLAYER_ATLAS = "huster.png";
 	public static final String LEVEL_ATLAS = "khung_nen.png";
-	public static final String LEVEL_ONE_DATA = "level_test_data_long.png";
 	public static final String MENU_BUTTONS = "button_atlas.png";
 	public static final String MENU_BACKGROUND = "menu_background.png";
 	public static final String PAUSE_BACKGROUND = "pause_menu.png";
@@ -24,7 +20,6 @@ public class LoadSave {
 	public static final String VOLUME_BUTTONS = "volume_buttons.png";
 	public static final String MENU_BACKGROUND_IMG = "background_menu.jpg";
 	public static final String PLAYING_BG_IMG = "playing_bg_img_1.png";
-	public static final String BIG_CLOUDS = "big_clouds.png";
 	public static final String SMALL_CLOUDS = "small_clouds.png";
 	public static final String PROFESSOR_SPRITE = "professor_sprite.png";
 	public static final String STATUS_BAR = "health.png";
