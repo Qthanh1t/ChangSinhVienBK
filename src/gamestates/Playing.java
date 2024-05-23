@@ -48,9 +48,10 @@ public class Playing extends State implements Statemethods {
 		backgroundImg = LoadSave.GetSpriteAtlas(LoadSave.PLAYING_BG_IMG);
 		bigCloud = LoadSave.GetSpriteAtlas(LoadSave.BIG_CLOUDS);
 		smallCloud = LoadSave.GetSpriteAtlas(LoadSave.SMALL_CLOUDS);
+
 		smallCloudsPos = new int[8];
 		for (int i = 0; i < smallCloudsPos.length; i++)
-			smallCloudsPos[i] = (int) (90 * Game.SCALE) + rnd.nextInt((int) (100 * Game.SCALE));
+			smallCloudsPos[i] = (int) (10 * Game.SCALE) + rnd.nextInt((int) (100 * Game.SCALE));
 		
 		calcLvlOffsets();
 		loadStartLevel();
@@ -143,9 +144,9 @@ public class Playing extends State implements Statemethods {
 
 	private void drawClouds(Graphics g) {
 
-		for (int i = 0; i < 3; i++)
-			g.drawImage(bigCloud, i * BIG_CLOUD_WIDTH - (int) (xLvlOffset * 0.3), (int) (204 * Game.SCALE),
-														BIG_CLOUD_WIDTH, BIG_CLOUD_HEIGHT, null);
+		// for (int i = 0; i < 3; i++)
+		// 	g.drawImage(bigCloud, i * BIG_CLOUD_WIDTH - (int) (xLvlOffset * 0.3), (int) (204 * Game.SCALE),
+		// 												BIG_CLOUD_WIDTH, BIG_CLOUD_HEIGHT, null);
 
 		for (int i = 0; i < smallCloudsPos.length; i++)
 			g.drawImage(smallCloud, SMALL_CLOUD_WIDTH * 4 * i - (int) (xLvlOffset * 0.7), smallCloudsPos[i], 
