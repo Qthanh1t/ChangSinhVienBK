@@ -138,8 +138,8 @@ public class ObjectManager {
 
     private void kissGirl(Girl g) {
         int dir = 1;
-        if(g.getObjType()==GIRL_LEFT){
-            dir=-1;
+        if(g.getObjType()==GIRL_LEFT) {
+            dir = -1;
         }
         projectiles.add(new Projectile((int)g.getHitbox().x,(int) g.getHitbox().y, dir));
     }
@@ -166,7 +166,7 @@ public class ObjectManager {
     }
 
     private void drawGirls(Graphics g, int xLvlOffset) {
-        for(Girl gi:girls){
+        for(Girl gi : girls){
             int x = (int) (gi.getHitbox().x - xLvlOffset);
             int width =(int) (GIRL_WIDTH * 1.5);
             if(gi.getObjType() == GIRL_LEFT){
@@ -174,12 +174,12 @@ public class ObjectManager {
                 width *= -1;
             }
             g.drawImage(girlImgs[gi.getAniIndex()], 
-                        x, 
+                        x - 10, 
                         (int) (gi.getHitbox().y), 
                         width,
-                        (int) (GIRL_HEIGHT*1.5), 
+                        (int) (GIRL_HEIGHT* 1.5), 
                         null);
-            gi.drawHitbox(g, xLvlOffset);
+            // gi.drawHitbox(g, xLvlOffset);
         }
     }
 
@@ -191,7 +191,7 @@ public class ObjectManager {
                 TRAP_WIDTH,
                 TRAP_HEIGHT,
                 null);
-            t.drawHitbox(g, xLvlOffset);
+            // t.drawHitbox(g, xLvlOffset);
         }
     }
     

@@ -7,9 +7,8 @@ import gamestates.Gamestate;
 import gamestates.Menu;
 import gamestates.Playing;
 import ui.AudioOptions;
-import ultiz.LoadSave;
 
-public class Game implements Runnable{
+public class Game implements Runnable {
 	
 	private GameWindow gameWindow;
 	private GamePanel gamePanel;
