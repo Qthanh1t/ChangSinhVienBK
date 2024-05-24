@@ -79,8 +79,8 @@ public class Playing extends State implements Statemethods {
 		objectManager = new ObjectManager(this);
 
 		player = new Player(200, 200, (int) (48 * Game.SCALE), (int) (48 * Game.SCALE), this);
-		player.loadLvlData(levelManager.getCurrentLevel().getLevelData());
 		player.setSpawn(levelManager.getCurrentLevel().getPlayerSpawn());
+		player.loadLvlData(levelManager.getCurrentLevel().getLevelData());
 
 		pauseOverlay = new PauseOverlay(this);
 		gameOverOverlay = new GameOverOverlay(this);
