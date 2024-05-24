@@ -42,7 +42,7 @@ public class GameObject {
         aniTick = 0;
         active = true;
 
-        if (objType == KNOWLEDGE_BOOK || objType == GIRL_LEFT || objType == GIRL_RIGHT)
+        if (objType == KNOWLEDGE_BOOK)
             doAnimation = true;
         else doAnimation = false;
     }
