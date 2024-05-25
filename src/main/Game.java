@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import audio.AudioPlayer;
 import gamestates.GameOptions;
 import gamestates.Gamestate;
+import gamestates.Guides;
 import gamestates.Menu;
 import gamestates.Playing;
 import ui.AudioOptions;
@@ -20,6 +21,7 @@ public class Game implements Runnable {
 	private Playing playing;
 	private Menu menu;
 	private GameOptions gameOptions;
+	private Guides guides;
 	private AudioOptions audioOptions;
 	private AudioPlayer audioPlayer;
 	
@@ -50,6 +52,7 @@ public class Game implements Runnable {
 		menu = new Menu(this);
 		playing = new Playing(this);
 		gameOptions = new GameOptions(this);
+		guides = new Guides(this);
 	}
 
 	private void startGameLoop() {
@@ -69,6 +72,9 @@ public class Game implements Runnable {
 		case OPTIONS:
 			gameOptions.update();
 			break;
+		case GUIDES:
+			guides.update();
+			break;
 		case QUIT:
 		default:
 			System.exit(0);
@@ -86,6 +92,9 @@ public class Game implements Runnable {
 			break;
 		case OPTIONS:
 			gameOptions.draw(g);
+			break;
+		case GUIDES:
+			guides.draw(g);
 			break;
 		default:
 			break;
@@ -159,5 +168,9 @@ public class Game implements Runnable {
 	
 	public AudioPlayer getAudioPlayer() {
 		return audioPlayer;
+	}
+
+	public Guides getGuides() {
+		return guides;
 	}
 }

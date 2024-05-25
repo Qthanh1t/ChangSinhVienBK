@@ -16,7 +16,7 @@ import ultiz.LoadSave;
 public class GameOptions extends State implements Statemethods {
     private AudioOptions audioOptions;
     private BufferedImage backgroundImg, optionsBackgroundImg;
-    private int bgX,bgY, bgW, bgH;
+    private int bgX, bgY, bgW, bgH;
     private UrmButton menuB;
     
     public GameOptions(Game game) {
@@ -27,8 +27,8 @@ public class GameOptions extends State implements Statemethods {
     }
 
     private void loadButtons() {
-        int menuX = (int) (387*Game.SCALE);
-        int menuY = (int) (325*Game.SCALE);
+        int menuX = (int) (387 * Game.SCALE);
+        int menuY = (int) (325 * Game.SCALE);
         menuB = new UrmButton(menuX, menuY, URM_SIZE, URM_SIZE, 2);
     }
 
@@ -36,10 +36,10 @@ public class GameOptions extends State implements Statemethods {
         backgroundImg = LoadSave.GetSpriteAtlas(LoadSave.MENU_BACKGROUND_IMG);
         optionsBackgroundImg = LoadSave.GetSpriteAtlas(LoadSave.OPTIONS_MENU);
 
-        bgW = (int) (optionsBackgroundImg.getWidth()*Game.SCALE);
-        bgH = (int) (optionsBackgroundImg.getHeight()*Game.SCALE);
-        bgX = Game.GAME_WIDTH/2 - bgW/2;
-        bgY = (int) (33*Game.SCALE);
+        bgW = (int) (optionsBackgroundImg.getWidth() * Game.SCALE);
+        bgH = (int) (optionsBackgroundImg.getHeight() * Game.SCALE);
+        bgX = Game.GAME_WIDTH / 2 - bgW / 2;
+        bgY = (int) (33 * Game.SCALE);
 
     }
 
@@ -61,7 +61,6 @@ public class GameOptions extends State implements Statemethods {
         if(e.getKeyCode() == KeyEvent.VK_ESCAPE)
             Gamestate.state = Gamestate.MENU;
 
-        
     }
 
     @Override
@@ -82,9 +81,9 @@ public class GameOptions extends State implements Statemethods {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if(isIn(e, menuB)){
+        if (isIn(e, menuB)) {
             menuB.setMousePressed(true);
-        }else 
+        } else 
             audioOptions.mousePressed(e);
         
     }

@@ -332,6 +332,7 @@ public class Player extends Entity {
 		resetDirBooleans();
 		resetInAir();
 		moving = false;
+		airSpeed = 0f;
 		jump = false;
 		state = IDLE;
 		health = 3;
