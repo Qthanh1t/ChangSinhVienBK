@@ -7,6 +7,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 
+import audio.AudioPlayer;
 import gamestates.Playing;
 import main.Game;
 import ultiz.LoadSave;
@@ -65,15 +66,18 @@ public class Player extends Entity {
 	public void update() {
 		//updateHealthBar();
 		if(health <= 0){
-			if(state!=DEAD){
-				state=DEAD;
-				aniTick=0;
-				aniIndex=0;
+			if (state != DEAD) {
+				state = DEAD;
+				aniTick = 0;
+				aniIndex = 0;
 				playing.setPlayerDying(true);
+				playing.getGame().getAudioPlayer().playEffect(AudioPlayer.DIE);
 			}
-			else if(aniIndex==GetSpriteAmount(DEAD)-1 && aniTick>=ANI_SPEED-1){
+			else if (aniIndex == GetSpriteAmount(DEAD)-1 && aniTick >= ANI_SPEED - 1){
 				playing.setGameOver(true);
-			}else{
+				// playing.getGame().getAudioPlayer().stopSong();
+				playing.getGame().getAudioPlayer().playEffect(AudioPlayer.GAMEOVER);
+			} else {
 				updateAnimationTick();
 			}
 			
@@ -214,9 +218,10 @@ public class Player extends Entity {
 	private void jump() {
 		if (inAir) 
 			return;
+		playing.getGame().getAudioPlayer().playEffect(AudioPlayer.JUMP);
 		inAir = true;
 		airSpeed = jumpSpeed;
-		
+
 	}
 
 	private void resetInAir() {
