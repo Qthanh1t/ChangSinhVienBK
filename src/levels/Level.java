@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import entities.Professor;
 import main.Game;
 import objects.Book;
+import objects.BookFX;
 import objects.GameAddict;
 import objects.Girl;
 import objects.TestPosition;
@@ -23,6 +24,7 @@ public class Level {
 	private int[][] lvlData;
 	private ArrayList<Professor> professors;
 	private ArrayList<Book> knowledgeBooks;
+	private ArrayList<BookFX> BookFx;
 	private ArrayList<TestPosition> testPosition;
 	private ArrayList<GameAddict> traps;
 	private ArrayList<Girl> girls;

@@ -1,11 +1,15 @@
 package objects;
 
+import static ultiz.Constants.ObjectConstants.BOOK_FX;
+import static ultiz.Constants.ObjectConstants.KNOWLEDGE_BOOK;
+
 import main.Game;
 
 public class Book extends GameObject {
 
     private float hoverOffset;
     private int maxHoverOffset, hoverDir = 1;
+    private BookFX bookFX;
 
     public Book(int x, int y, int objType) {
         super(x, y, objType);
@@ -18,6 +22,7 @@ public class Book extends GameObject {
         hitbox.x += (int) (Game.SCALE * 3);
 
         maxHoverOffset = (int) (10 * Game.SCALE);
+        bookFX = new BookFX(x, y, BOOK_FX);
     }
 
     public void update() {
@@ -35,5 +40,7 @@ public class Book extends GameObject {
 
         hitbox.y = y + hoverOffset - (int) (15 * Game.SCALE);
     }
-
+    public BookFX GetBookFX(){
+        return bookFX;
+    }
 }
