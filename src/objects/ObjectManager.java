@@ -20,6 +20,7 @@ public class ObjectManager {
 
     private Playing playing;
     private BufferedImage[] bookImgs;
+    private BufferedImage[] bookFx;
     private BufferedImage[] girlImgs;
     private BufferedImage testPosImg;
     private BufferedImage trapImg;
@@ -48,6 +49,7 @@ public class ObjectManager {
                 if (hitbox.intersects(b.getHitbox())) {
                     b.setActive(false);
                     applyEffectToPlayer(b);
+                    b.GetBookFX().active=true;
                 }
 
         for (TestPosition t : testPosition)
@@ -88,12 +90,22 @@ public class ObjectManager {
         }
         
         heartImg = LoadSave.GetSpriteAtlas(LoadSave.HEART);
+
+        bookFx = new BufferedImage[7];
+        temp = LoadSave.GetSpriteAtlas(LoadSave.BOOK_FX);
+        for(int i=0;i<7;i++){
+            bookFx[i] = temp.getSubimage(10*i, 0, 10, 8);
+        }
     }
 
     public void update(int [][] lvlData, Player player) {
-        for (Book b : knowledgeBooks)
+        for (Book b : knowledgeBooks){
             if (b.isActive())
                 b.update();
+            if(b.GetBookFX().active)
+                b.GetBookFX().update();
+        }
+            
         updateGirl(lvlData, player);
         updateProjectile(lvlData, player);
     }
@@ -151,6 +163,7 @@ public class ObjectManager {
 
     public void draw(Graphics g, int xLvlOffset) {
         drawBook(g, xLvlOffset);
+        drawBookFx(g, xLvlOffset);
         drawTestPos(g, xLvlOffset);
         drawTraps(g, xLvlOffset);
         drawGirls(g, xLvlOffset);
@@ -202,6 +215,17 @@ public class ObjectManager {
                     (int) (t.getHitbox().y - t.getyDrawOffset()), 
                     TEST_POSITION_WIDTH,
                     TEST_POSITION_HEIGHT,
+                    null);
+    }
+
+    private void drawBookFx(Graphics g, int xLvlOffset){
+        for (Book b : knowledgeBooks)
+            if (b.GetBookFX().active && !b.isActive())
+                g.drawImage(bookFx[b.GetBookFX().getAniIndex()],
+                    (int) (b.getHitbox().x - b.getxDrawOffset() - xLvlOffset),
+                    (int) (b.getHitbox().y - b.getyDrawOffset()), 
+                    BOOK_FX_WIDTH,
+                    BOOK_FX_HEIGHT,
                     null);
     }
 

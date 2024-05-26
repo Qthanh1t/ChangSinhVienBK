@@ -32,7 +32,7 @@ public class GameObject {
                 aniIndex = 0;
                 if(objType==GIRL_LEFT || objType==GIRL_RIGHT)
                     doAnimation=false;
-
+                if(objType==BOOK_FX) active = false;
             }   
         }
     }
@@ -45,6 +45,7 @@ public class GameObject {
         if (objType == KNOWLEDGE_BOOK)
             doAnimation = true;
         else doAnimation = false;
+        
     }
 
     protected void initHitbox(int width, int height) {

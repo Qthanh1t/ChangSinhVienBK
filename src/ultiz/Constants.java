@@ -25,6 +25,7 @@ public class Constants {
 		public static final int TRAP = 2;
 		public static final int GIRL_LEFT = 3;
 		public static final int GIRL_RIGHT = 4;
+		public static final int BOOK_FX = 5;
 
 		public static final int KNOWLEDGE_BOOK_VALUE = 1;
 
@@ -32,6 +33,11 @@ public class Constants {
 		public static final int KNOWLEDGE_BOOK_HEIGHT_DEFAULT = 35;
 		public static final int KNOWLEDGE_BOOK_WIDTH = (int) (KNOWLEDGE_BOOK_WIDTH_DEFAULT * Game.SCALE);
 		public static final int KNOWLEDGE_BOOK_HEIGHT = (int) (KNOWLEDGE_BOOK_HEIGHT_DEFAULT * Game.SCALE);
+
+		public static final int BOOK_FX_WIDTH_DEFAULT = 20;
+		public static final int BOOK_FX_HEIGHT_DEFAULT = 16;
+		public static final int BOOK_FX_WIDTH = (int) (KNOWLEDGE_BOOK_WIDTH_DEFAULT * Game.SCALE);
+		public static final int BOOK_FX_HEIGHT = (int) (KNOWLEDGE_BOOK_HEIGHT_DEFAULT * Game.SCALE);
 
 		public static final int TEST_POSITION_WIDTH_DEFAULT = 68;
 		public static final int TEST_POSITION_HEIGHT_DEFAULT = 61;
@@ -56,6 +62,8 @@ public class Constants {
 				case GIRL_LEFT:
 				case GIRL_RIGHT:
 					return 6;
+				case BOOK_FX:
+					return 7;
 			}
 			return 1;
 		}
