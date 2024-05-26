@@ -30,9 +30,9 @@ public class GameObject {
             aniIndex++;
             if(aniIndex >= GetSpriteAmount(objType)) {
                 aniIndex = 0;
-                if(objType==GIRL_LEFT || objType==GIRL_RIGHT)
-                    doAnimation=false;
-                if(objType==BOOK_FX) active = false;
+                if(objType == GIRL_LEFT || objType == GIRL_RIGHT)
+                    doAnimation = false;
+                if(objType == BOOK_FX) active = false;
             }   
         }
     }

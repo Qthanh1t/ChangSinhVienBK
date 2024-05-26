@@ -23,9 +23,10 @@ public class AudioPlayer {
     public static int JUMP = 1;
     public static int GAMEOVER = 2;
     public static int LVL_COMPLETED = 3;
-    public static int GIRL_FX = 4;
+    public static int KISS_GIRL_FX = 4;
     public static int COLLECT_BOOK_FX = 5;
     public static int CLICK_MOUSE = 6;
+    public static int TOUCH_PROFESSOR_FX = 7;
 
     private Clip[] songs, effects;
     private int currentSongId;
@@ -47,7 +48,7 @@ public class AudioPlayer {
     }
 
     private void loadEffects() {
-        String[] effectNames = {"die", "jump", "gameover", "lvlcompleted", "kissgirl", "collectbook", "clickmouse"};
+        String[] effectNames = {"die", "jump", "gameover", "lvlcompleted", "kissgirl", "collectbook", "clickmouse", "touchprofessor"};
         effects = new Clip[effectNames.length];
         for (int i = 0; i < effects.length; i++) 
             effects[i] = getClip(effectNames[i]);

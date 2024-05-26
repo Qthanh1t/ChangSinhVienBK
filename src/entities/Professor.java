@@ -11,7 +11,7 @@ import main.Game;
 public class Professor extends Enemy {
 
     private int attackBoxOffsetX;
-    private int count=0;
+    private int count = 0;
     public Professor(float x, float y) {
         super(x, y, PROFESSOR_WIDTH, PROFESSOR_HEIGHT, PROFESSOR);
         initHitbox(20, 31);
@@ -31,19 +31,19 @@ public class Professor extends Enemy {
 
 
     private void updateAttackBox() {
-        attackBox.x=hitbox.x-attackBoxOffsetX;
-        attackBox.y=hitbox.y;
+        attackBox.x = hitbox.x - attackBoxOffsetX;
+        attackBox.y = hitbox.y;
     }
 
-    public void updateBehavior(int[][] lvlData, Player player){
+    public void updateBehavior(int[][] lvlData, Player player) {
         if(firstUpdate){
             firstUpdateCheck(lvlData);
         }
 
-        if(inAir){
+        if(inAir) {
             updateInAir(lvlData);
         }
-        else{
+        else {
             switch (state) {
                 case RUN_LEFT:
                 case RUN_RIGHT:
@@ -54,11 +54,11 @@ public class Professor extends Enemy {
                     //     newState(ATTACK);
                     // }
                     move(lvlData);
-                    if(!attackChecked){
-                        CheckEnemyHit(attackBox,player);
+                    if (!attackChecked) {
+                        CheckEnemyHit(attackBox, player);
                     }
                     else {
-                        if(count >= 200){
+                        if(count >= 200) {
                             attackChecked = false;
                             count = 0;
                         } 

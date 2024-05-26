@@ -43,7 +43,7 @@ public class Player extends Entity {
 	private int flipW = 1;
 
 	private Playing playing;
-	private int tileY=0;
+	private int tileY = 0;
 
 	public Player(float x, float y, int width, int height, Playing playing) {
 		super(x, y, width, height);
@@ -73,7 +73,7 @@ public class Player extends Entity {
 				playing.setPlayerDying(true);
 				playing.getGame().getAudioPlayer().playEffect(AudioPlayer.DIE);
 			}
-			else if (aniIndex == GetSpriteAmount(DEAD)-1 && aniTick >= ANI_SPEED - 1){
+			else if (aniIndex == GetSpriteAmount(DEAD) -1 && aniTick >= ANI_SPEED - 1){
 				playing.setGameOver(true);
 				// playing.getGame().getAudioPlayer().stopSong();
 				playing.getGame().getAudioPlayer().playEffect(AudioPlayer.GAMEOVER);
@@ -347,5 +347,9 @@ public class Player extends Entity {
 	
 	public int getTileY(){
 		return tileY;
+	}
+
+	public Playing getPlaying() {
+		return playing;
 	}
 }

@@ -8,6 +8,7 @@ import static ultiz.Constants.*;
 import java.awt.geom.Rectangle2D;
 import java.lang.Math;
 
+import audio.AudioPlayer;
 import main.Game;
 
 public abstract class Enemy extends Entity {
@@ -100,6 +101,7 @@ public abstract class Enemy extends Entity {
 
     protected void CheckEnemyHit(Rectangle2D.Float attackBox, Player player) {
         if(attackBox.intersects(player.getHitbox())) {
+            player.getPlaying().getGame().getAudioPlayer().playEffect(AudioPlayer.TOUCH_PROFESSOR_FX);
             player.changeHealth(GetEnemyDmg(enemyType));
             attackChecked = true;
         }

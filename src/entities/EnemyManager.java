@@ -25,7 +25,7 @@ public class EnemyManager {
     }
 
     public void update(int[][] lvlData, Player player) {
-        for(Professor p : professors) 
+        for(Professor p : professors)
             p.update(lvlData, player);
     
     }

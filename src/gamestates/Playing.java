@@ -164,7 +164,7 @@ public class Playing extends State implements Statemethods {
 	}
 
 	public void setGameOver(boolean gameOver){
-		this.gameOver=gameOver;
+		this.gameOver = gameOver;
 	}
 
 	public void checkBooksTouched(Rectangle2D.Float hitbox) {
@@ -294,6 +294,6 @@ public class Playing extends State implements Statemethods {
 	}
 
     public void setPlayerDying(boolean playerDying) {
-        this.playerDying=playerDying;
+        this.playerDying = playerDying;
     }
 }

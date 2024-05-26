@@ -5,6 +5,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+import audio.AudioPlayer;
 import entities.Player;
 import gamestates.Playing;
 import levels.Level;
@@ -29,7 +30,7 @@ public class ObjectManager {
     private ArrayList<TestPosition> testPosition;
     private ArrayList<GameAddict> traps;
     private ArrayList<Girl> girls;
-    private ArrayList<Projectile> projectiles=new ArrayList<>();
+    private ArrayList<Projectile> projectiles = new ArrayList<>();
 
 
     public ObjectManager(Playing playing) {
@@ -47,9 +48,10 @@ public class ObjectManager {
         for (Book b : knowledgeBooks)
             if (b.isActive())
                 if (hitbox.intersects(b.getHitbox())) {
+                    playing.getGame().getAudioPlayer().playEffect(AudioPlayer.COLLECT_BOOK_FX);
                     b.setActive(false);
                     applyEffectToPlayer(b);
-                    b.GetBookFX().active=true;
+                    b.GetBookFX().active = true;
                 }
 
         for (TestPosition t : testPosition)
@@ -60,8 +62,9 @@ public class ObjectManager {
     }
 
     public void applyEffectToPlayer(Book b) {
-        if (b.getObjType() == KNOWLEDGE_BOOK)
+        if (b.getObjType() == KNOWLEDGE_BOOK) {
             playing.getPlayer().increaseKnowledge();
+        }
     }
 
     public void loadObjects(Level newLevel) {
@@ -93,7 +96,7 @@ public class ObjectManager {
 
         bookFx = new BufferedImage[7];
         temp = LoadSave.GetSpriteAtlas(LoadSave.BOOK_FX);
-        for(int i=0;i<7;i++){
+        for(int i = 0; i < bookFx.length; i++){
             bookFx[i] = temp.getSubimage(10*i, 0, 10, 8);
         }
     }
@@ -111,10 +114,11 @@ public class ObjectManager {
     }
 
     private void updateProjectile(int[][] lvlData, Player player) {
-        for(Projectile p:projectiles){
+        for(Projectile p:projectiles) {
             if(p.isActive()){
                 p.updatePos();
                 if(p.getHitbox().intersects(player.getHitbox())){
+                    player.getPlaying().getGame().getAudioPlayer().playEffect(AudioPlayer.KISS_GIRL_FX);
                     player.changeHealth(-1);
                     p.setActive(false);
                 }else if(IsProjectileHittingLevel(p, lvlData))
@@ -128,7 +132,7 @@ public class ObjectManager {
         if(g.getObjType() == GIRL_LEFT){
             if(g.getHitbox().x>player.getHitbox().x) return true;
             
-        }else if(g.getHitbox().x<player.getHitbox().x) return true;
+        } else if(g.getHitbox().x<player.getHitbox().x) return true;
         return false;
     }
 
@@ -142,7 +146,7 @@ public class ObjectManager {
                                 g.setAnimation(true);
                             }
             g.update();
-            if(g.getAniIndex()==5 && g.getAniTick()==0)
+            if(g.getAniIndex() == 5 && g.getAniTick() == 0)
                 kissGirl(g);
         }
     }
@@ -150,7 +154,7 @@ public class ObjectManager {
 
     private void kissGirl(Girl g) {
         int dir = 1;
-        if(g.getObjType()==GIRL_LEFT) {
+        if(g.getObjType() == GIRL_LEFT) {
             dir = -1;
         }
         projectiles.add(new Projectile((int)g.getHitbox().x,(int) g.getHitbox().y, dir));
