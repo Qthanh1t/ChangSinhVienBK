@@ -102,13 +102,15 @@ public abstract class Enemy extends Entity {
     protected void CheckEnemyHit(Rectangle2D.Float attackBox, Player player) {
         if(attackBox.intersects(player.getHitbox())) {
             player.getPlaying().getGame().getAudioPlayer().playEffect(AudioPlayer.TOUCH_PROFESSOR_FX);
+            if (player.getHealth() > 1) 
+                player.blinkAni();
             player.changeHealth(GetEnemyDmg(enemyType));
             attackChecked = true;
         }
         
     }
 
-    protected void updateAnimationTick(){
+    protected void updateAnimationTick() {
         aniTick++;
         if(aniTick >= ANI_SPEED){
             aniTick = 0;

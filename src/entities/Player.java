@@ -3,7 +3,10 @@ package entities;
 import static ultiz.Constants.*;
 import static ultiz.Constants.PlayerConstants.*;
 import static ultiz.HelpMethods.*;
+
+import java.awt.AlphaComposite;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 
@@ -15,7 +18,7 @@ import ultiz.LoadSave;
 public class Player extends Entity {
 	private BufferedImage[][] animations;
 
-	private boolean moving = false; //attacking = false;
+	private boolean moving = false;
 	private boolean left, right, jump;
 	private int[][] lvlData;
 	private float xDrawOffSet = 15 * Game.SCALE;
@@ -42,6 +45,13 @@ public class Player extends Entity {
 	private int flipX = 0;
 	private int flipW = 1;
 
+	// Blink Animation
+    private boolean isBlinking;
+    private long blinkStartTime;
+    private static final long BLINK_DURATION = 1000; // 1 second
+    private static final float MIN_ALPHA = 0.3f; // Minimum transparency
+    private static final float MAX_ALPHA = 1.0f; // Maximum transparency
+
 	private Playing playing;
 	private int tileY = 0;
 
@@ -52,6 +62,7 @@ public class Player extends Entity {
 		this.health = 3;
 		this.books = 0;
 		this.walkSpeed = 1.0f * Game.SCALE;
+		this.isBlinking = false;
 		loadAnimations();
 		initHitbox(17, 30);
 	}
@@ -64,38 +75,35 @@ public class Player extends Entity {
 	}
 	
 	public void update() {
-		//updateHealthBar();
-		if(health <= 0){
+		if (health <= 0) {
 			if (state != DEAD) {
 				state = DEAD;
 				aniTick = 0;
 				aniIndex = 0;
 				playing.setPlayerDying(true);
 				playing.getGame().getAudioPlayer().playEffect(AudioPlayer.DIE);
-			}
-			else if (aniIndex == GetSpriteAmount(DEAD) -1 && aniTick >= ANI_SPEED - 1){
+			} else if (aniIndex == GetSpriteAmount(DEAD) - 1 && aniTick >= ANI_SPEED - 1) {
 				playing.setGameOver(true);
-				// playing.getGame().getAudioPlayer().stopSong();
 				playing.getGame().getAudioPlayer().playEffect(AudioPlayer.GAMEOVER);
 			} else {
 				updateAnimationTick();
 			}
-			
 			return;
 		}
+		
+		if (isBlinking && System.currentTimeMillis() - blinkStartTime > BLINK_DURATION) {
+			isBlinking = false;
+		}
+
 		updatePos();
 		if (moving) {
 			checkBooksTouched();
 			checkTrapsTouched();
-			tileY = (int) (hitbox.y/Game.TILES_SIZE);
+			tileY = (int) (hitbox.y / Game.TILES_SIZE);
 		}
 		updateAnimationTick();
 		setAnimation();
-
 	}
-	
-	// private void updateHealthBar() {	
-	// }
 
 	private void checkTrapsTouched() {
 		playing.checkTrapsTouched(this);
@@ -105,12 +113,27 @@ public class Player extends Entity {
 		playing.checkBooksTouched(hitbox);
 	}
 
-	public void render(Graphics g, int lvlOffSet) {
-		g.drawImage(animations[state][aniIndex], (int) (hitbox.x - xDrawOffSet) - lvlOffSet + flipX, 
-										(int) (hitbox.y - yDrawOffSet), width*flipW, height, null);
-		//drawHitbox(g, lvlOffSet);
-		drawUI(g);
-	}
+    public void render(Graphics g, int lvlOffSet) {
+        Graphics2D g2d = (Graphics2D) g;
+        if (isBlinking) {
+            long elapsedTime = System.currentTimeMillis() - blinkStartTime;
+            float alpha = MIN_ALPHA + ((float) Math.sin(elapsedTime / 100.0 * Math.PI) * (MAX_ALPHA - MIN_ALPHA));
+            alpha = Math.max(MIN_ALPHA, Math.min(MAX_ALPHA, alpha)); // Clamping the alpha value
+
+            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
+        } else {
+            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, MAX_ALPHA));
+        }
+
+        g.drawImage(animations[state][aniIndex], (int) (hitbox.x - xDrawOffSet) - lvlOffSet + flipX,
+                (int) (hitbox.y - yDrawOffSet), width * flipW, height, null);
+
+        // Reset composite to default
+        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, MAX_ALPHA));
+
+        // Draw UI
+        drawUI(g);
+    }
 	
 	private void drawUI(Graphics g) {
 		g.drawImage(statusBarImg[health], statusBarX, statusBarY, statusBarWidth, statusBarHeight, null);
@@ -118,52 +141,43 @@ public class Player extends Entity {
 			g.drawImage(knowledgeBook, bookCountX, bookCountY, bookCountWidth, bookCountHeight, null);
 		if (books >= 2)
 			g.drawImage(knowledgeBook, bookCountX + 35, bookCountY, bookCountWidth, bookCountHeight, null);
-	 	if (books == 3)
+		if (books == 3)
 			g.drawImage(knowledgeBook, bookCountX + 70, bookCountY, bookCountWidth, bookCountHeight, null);
 	}
 
 	private void updateAnimationTick() {
-		
 		aniTick++;
 		if (aniTick >= ANI_SPEED) {
 			aniTick = 0;
 			aniIndex++;
 			if (aniIndex >= GetSpriteAmount(state)) {
 				aniIndex = 0;
-				//attacking = false;
 			}
-			
 		}
-		
 	}
-	
+
 	private void setAnimation() {
 		int startAni = state;
 		
-		if(moving) 
+		if (moving) 
 			state = RUNNING;
 		else 
 			state = IDLE;
 		
-		if(inAir) {
-			if(airSpeed < 0)
+		if (inAir) {
+			if (airSpeed < 0)
 				state = JUMP;
 			else
 				state = FALLING;
 		}
 		
-		// if(attacking)
-		// 	playerAction = ATTACK_1;
-		
 		if (startAni != state) 
 			resetAniTick();
-			
 	}
 	
 	private void resetAniTick() {
 		aniTick = 0;
 		aniIndex = 0;
-		
 	}
 
 	private void updatePos() {
@@ -195,8 +209,7 @@ public class Player extends Entity {
 				inAir = true;
 	
 		if (inAir) {
-			
-			if(CanMoveHere(hitbox.x, hitbox.y + airSpeed, hitbox.width, hitbox.height, lvlData)) {
+			if (CanMoveHere(hitbox.x, hitbox.y + airSpeed, hitbox.width, hitbox.height, lvlData)) {
 				hitbox.y += airSpeed;
 				airSpeed += GRAVITY;
 				updateXPos(xSpeed);
@@ -208,11 +221,10 @@ public class Player extends Entity {
 					airSpeed = fallSpeedAfterCollision;
 				updateXPos(xSpeed);
 			}
-			
-		} else 
+		} else {
 			updateXPos(xSpeed);
+		}
 		moving = true;
-		
 	}
 	
 	private void jump() {
@@ -221,13 +233,11 @@ public class Player extends Entity {
 		playing.getGame().getAudioPlayer().playEffect(AudioPlayer.JUMP);
 		inAir = true;
 		airSpeed = jumpSpeed;
-
 	}
 
 	private void resetInAir() {
 		inAir = false;
 		airSpeed = 0;
-		
 	}
 
 	private void updateXPos(float xSpeed) {
@@ -236,22 +246,20 @@ public class Player extends Entity {
 		} else {
 			hitbox.x = GetEntityXNextToWall(hitbox, xSpeed);
 		}
-		
 	}
 
-	public void changeHealth(int value){
+	public void changeHealth(int value) {
 		this.health += value;
-		if (this.health <= 0){
+		if (this.health <= 0) {
 			this.health = 0;
-			//game over
-		} else if (this.health >= 3) { 
+		} else if (this.health >= 3) {
 			this.health = 3;
 		}
 	}
 
 	public void kill() {
-        this.health = 0;
-    }
+		this.health = 0;
+	}
 
 	public void increaseKnowledge() {
 		this.books++;
@@ -259,39 +267,48 @@ public class Player extends Entity {
 			this.books = 3;
 	}
 
-	private void loadAnimations() {
-	
-			BufferedImage img = LoadSave.GetSpriteAtlas(LoadSave.PLAYER_ATLAS);
-			
-			animations = new BufferedImage[6][9];
-			// IDLE	
-			for (int i = 0; i < 9; i++) 
-				animations[0][i] = img.getSubimage(i * 32, 0, 32, 32);
-			for (int i = 0; i < 6; i++) 
-				animations[1][i] = img.getSubimage((i+9) * 32, 0, 32, 32);
-			for (int i = 0; i < 1; i++) 
-				animations[2][i] = img.getSubimage((i+15) * 32, 0, 32, 32);
-			for (int i = 0; i < 1; i++) 
-				animations[3][i] = img.getSubimage((i+15) * 32, 0, 32, 32);
-			for (int i = 0; i < 2; i++) 
-				animations[4][i] = img.getSubimage((i+16) * 32, 0, 32, 32);
-			for (int i = 0; i < 5; i++) 
-				animations[5][i] = img.getSubimage((i+18) * 32, 0, 32, 32);
-			
-			// Health
-			BufferedImage statusBar = LoadSave.GetSpriteAtlas(LoadSave.STATUS_BAR);
-			statusBarImg = new BufferedImage[4];
-			for (int i = 0; i < 4; i++) 
-				statusBarImg[i] = statusBar.getSubimage(i * 16, 0, 16,16);
+	public void blinkAni() {
+		isBlinking = true;
+		blinkStartTime = System.currentTimeMillis();
+	}
 
-			// Knowledge
-			BufferedImage book = LoadSave.GetSpriteAtlas(LoadSave.KNOWLEDGE_BOOK_ATLAS);
-			knowledgeBook = book.getSubimage(0, 0, 28, 35);
+	private void loadAnimations() {
+		BufferedImage img = LoadSave.GetSpriteAtlas(LoadSave.PLAYER_ATLAS);
+
+		animations = new BufferedImage[6][9];
+		// IDLE
+		for (int i = 0; i < 9; i++) 
+			animations[0][i] = img.getSubimage(i * 32, 0, 32, 32);
+		// RUNNING
+		for (int i = 0; i < 6; i++) 
+			animations[1][i] = img.getSubimage((i + 9) * 32, 0, 32, 32);
+		// JUMP
+		for (int i = 0; i < 1; i++) 
+			animations[2][i] = img.getSubimage((i + 15) * 32, 0, 32, 32);
+		// FALLING
+		for (int i = 0; i < 1; i++) 
+			animations[3][i] = img.getSubimage((i + 15) * 32, 0, 32, 32);
+		// DEAD
+		for (int i = 0; i < 2; i++) 
+			animations[4][i] = img.getSubimage((i + 16) * 32, 0, 32, 32);
+		// OTHER (if needed)
+		for (int i = 0; i < 5; i++) 
+			animations[5][i] = img.getSubimage((i + 18) * 32, 0, 32, 32);
+
+		// Health
+		BufferedImage statusBar = LoadSave.GetSpriteAtlas(LoadSave.STATUS_BAR);
+		statusBarImg = new BufferedImage[4];
+		for (int i = 0; i < 4; i++) 
+			statusBarImg[i] = statusBar.getSubimage(i * 16, 0, 16, 16);
+
+		// Knowledge
+		BufferedImage book = LoadSave.GetSpriteAtlas(LoadSave.KNOWLEDGE_BOOK_ATLAS);
+		knowledgeBook = book.getSubimage(0, 0, 28, 35);
 	}
 	
 	public void loadLvlData(int[][] lvlData) {
 		this.lvlData = lvlData;
-		if(!IsEntityOnFloor(hitbox, lvlData))
+		if (!IsEntityOnFloor(hitbox, lvlData))
 			inAir = true;
 	}
 	
@@ -299,10 +316,6 @@ public class Player extends Entity {
 		left = false;
 		right = false;
 	}
-	
-	// public void setAttacking(boolean attacking) {
-	// 	this.attacking = attacking;
-	// }
 	
 	public boolean isLeft() {
 		return left;
@@ -341,15 +354,21 @@ public class Player extends Entity {
 		hitbox.x = x;
 		hitbox.y = y;
 
-		if (!IsEntityOnFloor(hitbox, lvlData)) 
-				inAir = true;
+		if (!IsEntityOnFloor(hitbox, lvlData))
+			inAir = true;
+
+		isBlinking = false;
 	}
 	
-	public int getTileY(){
+	public int getTileY() {
 		return tileY;
 	}
 
 	public Playing getPlaying() {
 		return playing;
+	}
+
+	public int getHealth() {
+		return this.health;
 	}
 }

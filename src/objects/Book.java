@@ -1,7 +1,6 @@
 package objects;
 
 import static ultiz.Constants.ObjectConstants.BOOK_FX;
-import static ultiz.Constants.ObjectConstants.KNOWLEDGE_BOOK;
 
 import main.Game;
 

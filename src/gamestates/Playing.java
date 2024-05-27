@@ -96,7 +96,7 @@ public class Playing extends State implements Statemethods {
 			levelCompletedOverlay.update();
 		} else if(gameOver){
 			gameOverOverlay.update();
-		}else if(playerDying){
+		}else if(playerDying) {
 			player.update();
 		} else {
 			levelManager.update();

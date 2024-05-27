@@ -117,7 +117,9 @@ public class ObjectManager {
         for(Projectile p:projectiles) {
             if(p.isActive()){
                 p.updatePos();
-                if(p.getHitbox().intersects(player.getHitbox())){
+                if(p.getHitbox().intersects(player.getHitbox())) {
+                    if (player.getHealth() > 1)
+                        player.blinkAni();
                     player.getPlaying().getGame().getAudioPlayer().playEffect(AudioPlayer.KISS_GIRL_FX);
                     player.changeHealth(-1);
                     p.setActive(false);
