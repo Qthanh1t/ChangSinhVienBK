@@ -54,7 +54,7 @@ public class LoadSave {
 	}
 
 	public static BufferedImage[] GetAllLevels() {
-        List<String> levelNames = Arrays.asList("1.png", "2.png", "3.png", "4.png");
+        List<String> levelNames = Arrays.asList("1.png", "2.png", "3.png", "4.png", "5.png", "6.png", "7.png");
         BufferedImage[] levels = new BufferedImage[levelNames.size()];
 
         for(int i = 0; i < levels.length; i++) {
